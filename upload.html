@@ -1,0 +1,52 @@
+<!doctype HTML>
+<html>
+	<head>
+		<title>Speiseplan Kunzmann - Upload</title>
+		<meta charset=utf-8>
+		<link href="https://fonts.googleapis.com/css?family=Tangerine:700&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="style.css">
+	</head>
+		<body>
+			<!-- Upload-Bereich -->
+			<div id="upload">
+				<h1>Upload</h1>
+				<form action="/action_page.php">
+					<textarea name="input" rows="20">Hier Speiseplan-Info einfügen.</textarea>
+				</form>
+			</div>
+			
+			<!-- Preview-Bereich -->
+			<!-- Hier selbe Formatierung wie im echten Speiseplan -->
+			<h1>Preview</h1>
+			<div class="day">
+				<h2>Mittwoch, 12.02.2020</h2>
+				<table class="dishtable">
+					<tr>
+						<td>
+							<span class="dish">Hähnchenbrust "Melba"</span>
+						</td>
+						<td class="priceCell">
+							4,80€
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="dish">Käsespätzle mit Speckwürfel</span>
+						</td>
+						<td class="priceCell">
+							4,80€
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- Passwort-Eingabe und Absende-Button -->
+			<div id="submit">
+				<form action="/action_page.php">
+					<!-- <label for="pw">Passwort</label><br> -->
+					<input type="password" id="pw" name="pw" placeholder="Datenbank-Passwort.."><br>
+					<input type="submit" id="submitButton" value="An Server senden">
+				</form>
+			</div>
+		</body>
+</html>
