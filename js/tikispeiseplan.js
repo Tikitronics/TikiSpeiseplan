@@ -1,18 +1,17 @@
 // Global Variables
 var inputText = document.getElementById("menuInput");
-var chosenRestaurant;
-let weekDay = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag","Samstag", "Sonntag"];
+let weekDay = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
 let restaurants = [
-  {name:"Kunzmann", regex: /^kunzmann$/i},
-  {name:"Team Food", regex: /^team\s?food$/i}
+	{ name: "Kunzmann", regex: /^kunzmann$/i },
+	{ name: "Team Food", regex: /^team\s?food$/i }
 ];
 
 
 // Fokussiert und Selektiert den Eingabebereich
-inputText.onfocus = function() {
+inputText.onfocus = function () {
 	inputText.select();
-	}
-	
+}
+
 inputText.focus();
 
 // Event löst bei jedem eingegebenen Zeichen aus
@@ -25,18 +24,29 @@ inputText.oninput = tryParse;
 function tryParse() {
 	var text = inputText.value;
 	var lines = text.split(/\r?\n/);
-	
-	
+	var menuItems = new Array();
+
+	// Vorschaubereich zurücksetzen
+	flushPreview();
+
 	// Prüfe ob Testfeld leer
-	if(lines[0] == null) return;
-	
+	if (lines[0] == null) return;
+
 	var restaurant = checkRestaurant(lines[0]);
-	if(restaurant == null) return;
-	
+	if (restaurant == null) return;
+
 	var menuSegments = extractMenuSegments(lines);
-	if(menuSegments == null) return;
-	
-	
+	if (menuSegments == null) return;
+
+	console.log("Yo!");
+
+	for(var seg of menuSegments) {
+		var newItems = parseMenuSegment(seg, restaurant);
+		menuItems.push(newItems);
+	}
+	console.log(menuItems);
+
+	renderPreview(menuItems);
 }
 
 
@@ -45,17 +55,17 @@ function tryParse() {
 // ---------------------------------------------------------
 function checkRestaurant(line) {
 	var rest;
-	
+
 	for (var r of restaurants) {
-		if(r.regex.test(line)) {
+		if (r.regex.test(line)) {
 			rest = r;
 		}
 	}
-	
-	if(!rest) return null;
-	
-	console.log('Sie haben das Restaurant ' + rest.name + ' gewählt!');
-	
+
+	if (!rest) return null;
+
+	//console.log('Sie haben das Restaurant ' + rest.name + ' gewählt!');
+
 	return rest;
 }
 
@@ -67,25 +77,25 @@ function checkRestaurant(line) {
 function extractMenuSegments(lineArray) {
 	var weekDayLines = new Array();
 	var i;
-	
+
 	// -- Finde Zeilen, die Wochentage enthalten
-	for(i = 0; i < lineArray.length; i++) {
-		for(var d of weekDay) {
+	for (i = 0; i < lineArray.length; i++) {
+		for (var d of weekDay) {
 			var reg = new RegExp(d, "i");
-			if(reg.test(lineArray[i])) weekDayLines.push(i);
+			if (reg.test(lineArray[i])) weekDayLines.push(i);
 		}
 	}
 	if (weekDayLines.length == 0) return null;
 	//console.log(weekDayLines);
-	
+
 	// -- Erzeuge Array aus Speiseplan-Segmenten (Tage)
 	var resultArray = [];
-	for(i = 0; i < (weekDayLines.length-1); i++) {
-		resultArray.push(lineArray.slice(weekDayLines[i], weekDayLines[i+1]));
+	for (i = 0; i < (weekDayLines.length - 1); i++) {
+		resultArray.push(lineArray.slice(weekDayLines[i], weekDayLines[i + 1]));
 	}
 	resultArray.push(lineArray.slice(weekDayLines[i]));
-	console.log(resultArray);
-	
+	//console.log(resultArray);
+
 	return resultArray;
 }
 
@@ -93,42 +103,137 @@ function extractMenuSegments(lineArray) {
 // Extrahiert die Daten aus einem MenuSegment
 // (ein Kalendertag / evtl. mehrere Gerichte)
 // ---------------------------------------------------------
-function parseMenuSegment(menuSegment) {
+function parseMenuSegment(menuSegment, restaurant) {
+	var segmentContent;
+	var menuItems = new Array();
 	var dateRegEx = /\d{1,2}.\d{1,2}.\d{2,4}/;
 	var day;
+	var date;
 	var i;
-	
+
 	// Guard Clauses
-	if(!menuSegment) {
+	if (!menuSegment) {
 		console.log("Leeres menuSegment übergeben.");
 		return;
 	}
-	if(menuSegment.length < 2) {
+	if (menuSegment.length < 2) {
 		console.log("menuSegment mit nur einer Zeile übergeben.");
 		return;
 	}
-	
+
+	segmentContent = menuSegment.slice(1);
+
 	// Datum extrahieren
-	for(i = 0; i < weekDay.length ; i++) {
+	for (i = 0; i < weekDay.length; i++) {
+		date = dateRegEx.exec(menuSegment[0]);
 		var reg = new RegExp(weekDay[i], "i");
-		if(reg.test(menuSegment[0])) {
+		if (reg.test(menuSegment[0])) {
 			day = weekDay[i];
 		}
-		
-	for(var i = 1; i < menuSegment.length; i++) {
-		
 	}
-	
-	
+
+	// Inhalt extrahieren
+	// Format: Beschreibung; Zusätzliche Beschreibung; Beilage; Typ; Preis
+	for (var line of segmentContent) {
+		var lineContent = line.split(';');
+		var item = new MenuItem(restaurant, day, date, lineContent[0], lineContent[1], lineContent[2], lineContent[3], lineContent[4],)
+		menuItems.push(item);
+	}
+
+	return menuItems;
 }
 
 // ---------------------------------------------------------
 // Konstruktor MenuItem
 // ---------------------------------------------------------
-function MenuItem(restaurant, date, descr, addDescr, price) {
-  this.restaurant = restaurant;
-  this.date = date;
-  this.descr = descr;
-  this.addDescr = addDescr;
-  this.price = price;
+function MenuItem(restaurant, weekDay, date, descr, addDescr, side, type, price) {
+	this.restaurant = restaurant;
+	this.weekDay = weekDay;
+	this.date = date;
+	this.descr = descr;
+	this.addDescr = addDescr;
+	this.side = side;
+	this.type = type;
+	this.price = price;
+}
+
+// ---------------------------------------------------------
+// Zeigt eine Vorschau der eingegebenen MenuItems
+// <div class="day">
+// 	<h2>Mittwoch, 12.02.2020</h2>
+// 	<table class="dishtable">
+// 		<tr>
+// 			<td>
+// 				<span class="dish">Hähnchenbrust "Melba"</span>
+// 			</td>
+// 			<td class="priceCell">
+// 				4,80€
+// 			</td>
+// 		</tr>
+// 		<tr>
+// 			<td>
+// 				<span class="dish">Käsespätzle mit Speckwürfel</span>
+// 			</td>
+// 			<td class="priceCell">
+// 				4,80€
+// 			</td>
+// 		</tr>
+// 	</table>
+// </div>
+// ---------------------------------------------------------
+function renderPreview(menuItems) {
+	var previewSection = document.getElementById("previewDiv");
+	if (!previewSection) {
+		console.log("HTML <div> PreviewDiv nicht gefunden!");
+		return;
+	}
+	
+	// Section, überschrift und Tabelle
+	var sec = document.createElement("div");
+	sec.className = "day";
+
+	var header = document.createElement("h2");
+	header.innerText = menuItems[0].weekDay + ", " + menuItems[0].date;
+
+	var table = document.createElement("table");
+	table.className = "dishtable";
+
+	sec.appendChild(header);
+	sec.appendChild(table);
+
+	// -- Hauptzeile
+	// Zelle für Gericht
+	var mainCell = document.createElement("td");
+	var mainText = document.createElement("span");
+	mainText.className = "dish";
+	mainText.innerText = menuItems[0].descr;
+	mainCell.appendChild(mainText);
+
+	// Zelle für Preis
+	var priceCell = document.createElement("td");
+	priceCell.innerText = menuItems[0].price;
+	priceCell.className = "priceCell";
+
+	// Zu Zeile zusammenfügen
+	var row = document.createElement("tr");
+	row.appendChild(mainCell);
+	row.appendChild(priceCell);
+
+	// Zu Tablelle zusammenfügen
+	table.appendChild(row);
+
+	previewSection.appendChild(sec);
+}
+
+// ---------------------------------------------------------
+// Preview Inhalte löschen
+// ---------------------------------------------------------
+function flushPreview() {
+	var previewSection = document.getElementById("previewDiv");
+	if (!previewSection) {
+		console.log("HTML <div> PreviewDiv nicht gefunden!");
+		return;
+	}
+
+	previewSection.innerHTML = "";
 }
