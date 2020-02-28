@@ -2,8 +2,8 @@
 var inputText = document.getElementById("menuInput");
 let weekDay = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
 let restaurants = [
-	{ name: "Kunzmann", regex: /^kunzmann$/i },
-	{ name: "Team Food", regex: /^team\s?food$/i }
+	{ name: "Kunzmann", regex: /^kunzmann$/i, image: "../img/mercedes-logo-semi.svg", icon: "../img/mercedes-logo.svg" },
+	{ name: "Team Food", regex: /^team\s?food$/i, image: "../img/teamfood-semi.png", icon: "../img/teamfood_icon.svg" },
 ];
 
 
@@ -62,10 +62,13 @@ function checkRestaurant(line) {
 		}
 	}
 
-	if (!rest) return null;
+	if (!rest) 
+	{
+		inputText.style.backgroundImage = "";
+		return null;
+	}
 
-	//console.log('Sie haben das Restaurant ' + rest.name + ' gewählt!');
-
+	inputText.style.backgroundImage = "url('" + rest.image + "')";
 	return rest;
 }
 
@@ -193,10 +196,13 @@ function renderPreview(menuItems) {
 		return;
 	}
 	
+	if(!menuItems) return;
+	if(menuItems.length == 0) return;
+	
 	// Jedes Element in menuItems steht für einen Tag
 	for(var menuDay of menuItems)
 	{
-		if (menuDay.length == 0) {
+		if (!menuDay || menuDay.length == 0) {
 			console.log("Leerer menuDay.");
 			return;
 		}
@@ -206,7 +212,9 @@ function renderPreview(menuItems) {
 		sec.className = "day";
 
 		var header = document.createElement("h2");
-		header.innerText = menuDay[0].weekDay + ", " + menuDay[0].date;
+		var dateText = menuDay[0].weekDay;
+		if(menuDay[0].date) dateText += ", " + menuDay[0].date;
+		header.innerText = dateText;
 
 		var table = document.createElement("table");
 		table.className = "dishtable";

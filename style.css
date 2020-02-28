@@ -21,10 +21,10 @@ body {
 	margin-left: 20px;
 }
 
-.side {
+/* .side {
 	margin-left: 20px;
 	font-size: 24px;
-}
+} */
 
 .addition {
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -57,8 +57,12 @@ textarea {
   --box-sizing: border-box;
   --font-size: 14px;
   --border: 2px solid #ccc;
-  --border-radius: 5px;
+  border-radius: 5px;
   --background-color: #f8f8f8;
+  --background-image: url('img/mercedes-logo-semi.svg');
+  background-repeat: no-repeat;
+  background-size: 300px;
+  background-position: center;
   resize: none;
 }
 
