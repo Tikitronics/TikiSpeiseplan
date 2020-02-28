@@ -21,6 +21,14 @@ body {
 	margin-left: 20px;
 }
 
+.addition {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	color: #333;
+	font-size: small;
+	font-style: italic;
+	margin-left: 20px;
+}
+
 .dishtable {
 	margin: 0px;
 	width: 100%;
