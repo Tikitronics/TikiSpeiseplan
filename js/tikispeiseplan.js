@@ -158,7 +158,11 @@ function MenuItem(restaurant, weekDay, date, descr, addDescr, side, type, price)
 }
 
 // ---------------------------------------------------------
-// Zeigt eine Vorschau der eingegebenen MenuItems
+// Zeigt eine Vorschau der eingegebenen MenuItems. Eine MenuItem
+// stellt einen Tag dar und kann mehrere Gerichte enthalten.
+//
+// Zielformat:
+// -----------
 // <div class="day">
 // 	<h2>Mittwoch, 12.02.2020</h2>
 // 	<table class="dishtable">
@@ -188,30 +192,59 @@ function renderPreview(menuItems) {
 		return;
 	}
 	
-	// Section, überschrift und Tabelle
-	var sec = document.createElement("div");
-	sec.className = "day";
+	// Jedes Element in menuItems steht für einen Tag
+	for(var menuDay of menuItems)
+	{
+		if (menuDay.length == 0) {
+			console.log("Leerer menuDay.");
+			return;
+		}
 
-	var header = document.createElement("h2");
-	header.innerText = menuItems[0].weekDay + ", " + menuItems[0].date;
+		// Section, überschrift und Tabelle
+		var sec = document.createElement("div");
+		sec.className = "day";
 
-	var table = document.createElement("table");
-	table.className = "dishtable";
+		var header = document.createElement("h2");
+		header.innerText = menuDay[0].weekDay + ", " + menuDay[0].date;
 
-	sec.appendChild(header);
-	sec.appendChild(table);
+		var table = document.createElement("table");
+		table.className = "dishtable";
 
-	// -- Hauptzeile
+		sec.appendChild(header);
+		sec.appendChild(table);
+
+		// Einzelne Einträge zu Tabelle zusammenfügen
+		for(var dish of menuDay) {
+			var row = formPreviewRow(dish);
+			table.appendChild(row);
+		}
+
+		previewSection.appendChild(sec);
+	}
+}
+
+// ---------------------------------------------------------
+// Formuliert eine Tabellen-Zeile für das Preview
+//
+//	<tr>
+// 		<td>
+// 			<span class="dish">Hähnchenbrust "Melba"</span>
+// 		</td>
+// 		<td class="priceCell">4,80€</td>
+// 	</tr>
+// ---------------------------------------------------------
+function formPreviewRow(dish)
+{
 	// Zelle für Gericht
 	var mainCell = document.createElement("td");
 	var mainText = document.createElement("span");
 	mainText.className = "dish";
-	mainText.innerText = menuItems[0].descr;
+	mainText.innerText = dish.descr;
 	mainCell.appendChild(mainText);
 
 	// Zelle für Preis
 	var priceCell = document.createElement("td");
-	priceCell.innerText = menuItems[0].price;
+	priceCell.innerText = dish.price ?? "";
 	priceCell.className = "priceCell";
 
 	// Zu Zeile zusammenfügen
@@ -219,10 +252,7 @@ function renderPreview(menuItems) {
 	row.appendChild(mainCell);
 	row.appendChild(priceCell);
 
-	// Zu Tablelle zusammenfügen
-	table.appendChild(row);
-
-	previewSection.appendChild(sec);
+	return row;
 }
 
 // ---------------------------------------------------------
