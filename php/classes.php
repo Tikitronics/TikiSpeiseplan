@@ -23,11 +23,13 @@ class MenuItem {
 
 class Restaurant {
 	// Properties
+	public $id;
 	public $name;
 	public $logoUrl;
 	
 	// Methods
-	function __construct($name, $logo) {
+	function __construct($id, $name, $logo) {
+		$this->id = $id;
 		$this->name = $name;
 		$this->logoUrl = $logo;
   }
