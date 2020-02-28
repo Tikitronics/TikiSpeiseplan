@@ -3,7 +3,7 @@ var inputText = document.getElementById("menuInput");
 let weekDay = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
 let restaurants = [
 	{ name: "Kunzmann", regex: /^kunzmann$/i, image: "../img/mercedes-logo-semi.svg", icon: "../img/mercedes-logo.svg" },
-	{ name: "Team Food", regex: /^team\s?food$/i, image: "../img/teamfood-semi.png", icon: "../img/teamfood_icon.svg" },
+	{ name: "Team Food", regex: /^team\s?food$/i, image: "../img/teamfood-semi.png", icon: "../img/teamfood_icon.png" },
 ];
 
 
