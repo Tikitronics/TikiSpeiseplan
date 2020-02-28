@@ -168,7 +168,8 @@ function MenuItem(restaurant, weekDay, date, descr, addDescr, side, type, price)
 // 	<table class="dishtable">
 // 		<tr>
 // 			<td>
-// 				<span class="dish">Hähnchenbrust "Melba"</span>
+// 				<span class="dish">Hähnchenbrust "Melba" (+ side)</span>
+//				<span class="addition">addDesr</span>
 // 			</td>
 // 			<td class="priceCell">
 // 				4,80€
@@ -228,7 +229,8 @@ function renderPreview(menuItems) {
 //
 //	<tr>
 // 		<td>
-// 			<span class="dish">Hähnchenbrust "Melba"</span>
+// 			<span class="dish">Hähnchenbrust "Melba" (+ side)</span>
+//				<span class="addition">addDesr</span>
 // 		</td>
 // 		<td class="priceCell">4,80€</td>
 // 	</tr>
@@ -239,7 +241,9 @@ function formPreviewRow(dish)
 	var mainCell = document.createElement("td");
 	var mainText = document.createElement("span");
 	mainText.className = "dish";
-	mainText.innerText = dish.descr;
+	var descr = dish.descr;
+	if(dish.side) descr += " + " + dish.side;
+	mainText.innerText = descr;
 	mainCell.appendChild(mainText);
 
 	// Zelle für Preis
