@@ -71,7 +71,7 @@ function checkRestaurant(line) {
 
 
 // ---------------------------------------------------------
-// Extrahiert aus einem Zeilen Array die Teilarrays, 
+// Extrahiert aus einem Zeilen Array die Teilarrays,
 // die mit einem Wochentag beginnen
 // ---------------------------------------------------------
 function extractMenuSegments(lineArray) {
@@ -192,7 +192,7 @@ function renderPreview(menuItems) {
 		console.log("HTML <div> PreviewDiv nicht gefunden!");
 		return;
 	}
-	
+
 	// Jedes Element in menuItems steht für einen Tag
 	for(var menuDay of menuItems)
 	{
@@ -248,7 +248,7 @@ function formPreviewRow(dish)
 
 	// Zelle für Preis
 	var priceCell = document.createElement("td");
-	priceCell.innerText = dish.price ?? "";
+	priceCell.innerText = dish.price || "";
 	priceCell.className = "priceCell";
 
 	// Zu Zeile zusammenfügen
