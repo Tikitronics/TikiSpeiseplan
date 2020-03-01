@@ -23,17 +23,27 @@
 
 			$obj = json_decode($json);
 
-			//var_dump($obj);
-			
+			// Prüfe JSON Format
+			var_dump($obj);
+			if(!isset($obj->operation)) {
+				errorMessage();
+				return;
+			}
+
 			//echo $obj->message . ', ' . $obj->name;
 
 			if($obj->operation == "add") {
 
-				$statement = $pdo->prepare("INSERT INTO menuitem(RestaurantId, Day, Description, Price) VALUES (?, ?, ?, ?)");
-				//$statement->execute(array('Max', 'Mustermann'));   
-				//while($row = $statement->fetch()) {
-   				//echo $row['vorname']." ".$row['nachname']."<br />";
-   				//echo "E-Mail: ".$row['email']."<br /><br />";
+				$statement = $pdo->prepare("INSERT INTO menuitem(RestaurantId, Day, Description, Price) VALUES (:rid, :day, :descr, :price)");
+				$statement->execute([
+					'rid' => $obj->restaurantid,
+					'day' => $obj->day,
+					'descr' => $obj->description,
+					'price' => $obj->price,
+				]);
+				   
+				//$neue_id = $pdo->lastInsertId();
+				//echo "Neues Gericht mit id $neue_id angelegt";
 			}
 			else {
 				echo "Unknown Request";
