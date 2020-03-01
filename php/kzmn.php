@@ -10,20 +10,14 @@
 
 			<?php
 				// Klassendefinitionen hinzufügen
-				require 'classes.php';
+				require_once('classes.php');
+				require_once('etc.php');
 				
 				// MySQL Verbindung herstellen
 				$pdo = new PDO('mysql:host=localhost;dbname=food', 'test', 'test');
 				
 				// Restaurants holen
-				$restaurants = array();
-				
-				$sql = "SELECT * FROM restaurant";
-				foreach ($pdo->query($sql) as $row) {
-					$restaurants[$row['RestaurantId']] = new Restaurant($row['Name'], $row['LogoUrl']);
-				}
-				
-				console_log($restaurants);
+				$restaurants = getRestaurantList($pdo);
 				
 				// Speisekarte holen
 				$menu_items = array();
@@ -34,7 +28,7 @@
 				foreach ($pdo->query($sql) as $row) {
 					$resId = $row['RestaurantId'];
 					console_log($resId);
-					$item = new MenuItem($row['Day'], $restaurants[$resId], $row['Description'], $row['Price'], $row['AdditionalDescription'], $row['FoodTypeId'], $row['PictureUrl']);
+					$item = new MenuItem($row['Day'], getRestaurantById($resId, $restaurants), $row['Description'], $row['Price'], $row['AdditionalDescription'], $row['FoodTypeId'], $row['PictureUrl']);
 					
 					$menu_items[] = $item;
 					
