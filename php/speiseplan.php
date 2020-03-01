@@ -37,6 +37,10 @@
 				
 				console_log($menu_items);
 				
+
+				/*--------------------------------------------------
+				// Schreibt einen Tag als HTML
+				// ------------------------------------------------*/
 				function writeDay($day, $dish, $price) {
 					
 					// Prüfungen hier
@@ -44,18 +48,21 @@
 					
 					// Ausgabe
 					echo "<div class=\"day\">";
-					echo '<h1>' . convertDate($day) . '</h1>';
+					echo '<h2>' . convertDate($day) . '</h2>';
 					echo "<table class=\"dishtable\">";
 					echo "<tr>";
 					echo "<td>";
 					echo '<span class="dish">' . $dish . '</span>';
 					echo "</td>";
-					echo '<td>' . $price . '€</td>';
+					echo '<td class="priceCell">' . $price . '€</td>';
 					echo "</tr>";
 					echo "</table>";
 					echo "</div>";
 				}
 				
+				/*--------------------------------------------------
+				// Tag zur Anzeige konvertieren
+				// ------------------------------------------------*/
 				function convertDate($sql_date) {
 					$tage = array("Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag");
 					$phpdate = strtotime( $sql_date );
@@ -64,7 +71,9 @@
 					return $tage[$day_of_the_week] . ', ' . $day_german;
 				}
 				
-				// Log to Browser Console
+				/*--------------------------------------------------
+				// JS Logging hijacken
+				// ------------------------------------------------*/
 				function console_log( $data ){
 					echo '<script>';
 					echo 'console.log('. json_encode( $data ) .')';
@@ -73,31 +82,8 @@
 				
 			?>
 			
-			<div class="day">
-				<h1>Mittwoch, 12.02.2020</h1>
-				<table class="dishtable">
-					<tr>
-						<td>
-							<span class="dish">Hähnchenbrust "Melba" mit Curry — Cocossoße dazu Reis</span>
-						</td>
-						<td>
-							4,80€
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span class="dish">Käsespätzle mit Speckwürfel</span>
-						</td>
-						<td>
-							4,80€
-						</td>
-					</tr>
-				</table>
-			</div>
-		
-			
 			<div id="imageChef">
-				<image src="luigi.png"></image>
+				<image src="..\img\luigi.png"></image>
 			</div>
 		</body>
 </html>

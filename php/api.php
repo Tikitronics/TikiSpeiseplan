@@ -6,6 +6,19 @@
 	
 	<body>
 		<?php
+
+			/*	Erwartetes JSON Format
+			{
+				"password" : "****",
+				"operation": "add",
+				"restaurant": "Kunzmann",
+				"day": "2020-03-02",
+				"description" : "Leggumes",
+				"additional_description" : "mit Soße",
+				"price" : "4.20€"
+			}
+			*/
+
 			// Klassendefinitionen hinzufügen
 			require_once('classes.php');
 			require_once('etc.php');
