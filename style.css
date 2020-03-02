@@ -78,7 +78,7 @@ input[type=submit] {
 
 #imageChef {
 	margin: 10px;
-	position: absolute;
+	position: fixed;
 	bottom: 10px;
 	right: 10px;
 	transition: opacity 0.3s;
