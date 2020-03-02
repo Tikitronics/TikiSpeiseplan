@@ -27,7 +27,6 @@
 				
 				foreach ($pdo->query($sql) as $row) {
 					$resId = $row['RestaurantId'];
-					console_log($resId);
 					$item = new MenuItem($row['Day'], getRestaurantById($resId, $restaurants), $row['Description'], $row['Price'], $row['AdditionalDescription'], $row['FoodTypeId'], $row['PictureUrl']);
 					
 					$menu_items[] = $item;
@@ -48,16 +47,16 @@
 					
 					// Ausgabe
 					echo "<div class=\"day\">";
-					echo '<h2>' . convertDate($day) . '</h2>';
-					echo "<table class=\"dishtable\">";
-					echo "<tr>";
-					echo "<td>";
-					echo '<span class="dish">' . $dish . '</span>';
-					echo "</td>";
-					echo '<td class="priceCell">' . $price . '€</td>';
-					echo "</tr>";
-					echo "</table>";
-					echo "</div>";
+					echo '<h2>' . convertDate($day) . "</h2>";
+					echo "<table class=\"dishtable\">\n";
+					echo "<tr>\n";
+					echo "<td>\n";
+					echo '<span class="dish">' . $dish . "</span>\n";
+					echo "</td>\n";
+					echo '<td class="priceCell">' . $price . "€</td>\n";
+					echo "</tr>\n";
+					echo "</table>\n";
+					echo "</div>\n\n";
 				}
 				
 				/*--------------------------------------------------
@@ -82,8 +81,7 @@
 				
 			?>
 			
-			<div id="imageChef">
-				<image src="..\img\luigi.png"></image>
-			</div>
+			<image id="imageChef" src="..\img\luigi.png"></image>
+
 		</body>
 </html>
