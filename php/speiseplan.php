@@ -39,34 +39,44 @@
 
 				$grouped_items = groupMenuItemsByDate($menu_items);
 				
+				/* Debug */
 				console_log($grouped_items);
 
 
-				// @todo SCHLEIFE DURCHLAUFEN UND NACH SUB-ARRAY FÜR TAG BILDEN
-				// @todo WriteDay muss array von MenuItems als Argument haben
-				//writeDay($row['Day'], $row['Description'], $row['Price']);
+				foreach($grouped_items as $day) {
+					writeDay($day);
+				}
+				
 				
 				/*--------------------------------------------------
 				// Schreibt einen Tag als HTML
 				// ------------------------------------------------*/
-				function writeDay($day, $dish, $price) {
-					
-					// Prüfungen hier
+				function writeDay($menu_day) {
+					// Guard clause
+					if(!isset($menu_day)) return;
+					if(count($menu_day) == 0) return;
 
-					
+					$date_day = convertDate($menu_day[0]->day);
+
 					// Ausgabe
 					echo "<div class=\"day\">";
-					echo '<h2>' . convertDate($day) . "</h2>";
+					echo '<h2>' . $date_day . "</h2>";
 					echo "<table class=\"dishtable\">\n";
-					echo "<tr>\n";
-					echo "<td>\n";
-					// @todo Logo hinzufügen
-					//if(isset)
-					//echo "<img src="../img/mercedes-logo.svg">
-					echo '<span class="dish">' . $dish . "</span>\n";
-					echo "</td>\n";
-					echo '<td class="priceCell">' . $price . "€</td>\n";
-					echo "</tr>\n";
+
+					foreach($menu_day as $dish) {
+						echo "<tr>\n<td>\n";
+						// @todo Logo hinzufügen
+						if(isset($dish->restaurant->logoUrl))
+						{
+							echo '<img src="../img/' . $dish->restaurant->logoUrl . '" class="logo">';
+						}
+						
+						echo '<span class="dish">' . $dish->descr . "</span>\n";
+						echo "</td>\n";
+						echo '<td class="priceCell">' . $dish->price . "€</td>\n";
+						echo "</tr>\n";
+					}
+					
 					echo "</table>\n";
 					echo "</div>\n\n";
 				}
