@@ -25,18 +25,27 @@
 				//$statement = $pdo->prepare("SELECT * FROM menuItem WHERE Day = :tag ORDER BY Day ASC");
 				$sql = "SELECT * FROM menuItem ORDER BY Day ASC";
 				
+				// Hole die Liste der MenuItems von der Datenbank
 				foreach ($pdo->query($sql) as $row) {
 					$resId = $row['RestaurantId'];
 					$item = new MenuItem($row['Day'], getRestaurantById($resId, $restaurants), $row['Description'], $row['Price'], $row['AdditionalDescription'], $row['FoodTypeId'], $row['PictureUrl']);
-					
 					$menu_items[] = $item;
-					
-					writeDay($row['Day'], $row['Description'], $row['Price']);
 				}
-				
-				console_log($menu_items);
+
 				
 
+				/* Debug */
+				console_log($menu_items);
+
+				$grouped_items = groupMenuItemsByDate($menu_items);
+				
+				console_log($grouped_items);
+
+
+				// @todo SCHLEIFE DURCHLAUFEN UND NACH SUB-ARRAY FÜR TAG BILDEN
+				// @todo WriteDay muss array von MenuItems als Argument haben
+				//writeDay($row['Day'], $row['Description'], $row['Price']);
+				
 				/*--------------------------------------------------
 				// Schreibt einen Tag als HTML
 				// ------------------------------------------------*/
@@ -51,6 +60,9 @@
 					echo "<table class=\"dishtable\">\n";
 					echo "<tr>\n";
 					echo "<td>\n";
+					// @todo Logo hinzufügen
+					//if(isset)
+					//echo "<img src="../img/mercedes-logo.svg">
 					echo '<span class="dish">' . $dish . "</span>\n";
 					echo "</td>\n";
 					echo '<td class="priceCell">' . $price . "€</td>\n";
@@ -59,25 +71,7 @@
 					echo "</div>\n\n";
 				}
 				
-				/*--------------------------------------------------
-				// Tag zur Anzeige konvertieren
-				// ------------------------------------------------*/
-				function convertDate($sql_date) {
-					$tage = array("Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag");
-					$phpdate = strtotime( $sql_date );
-					$day_german = date("d.m.Y", $phpdate);
-					$day_of_the_week = date("w", $phpdate);
-					return $tage[$day_of_the_week] . ', ' . $day_german;
-				}
 				
-				/*--------------------------------------------------
-				// JS Logging hijacken
-				// ------------------------------------------------*/
-				function console_log( $data ){
-					echo '<script>';
-					echo 'console.log('. json_encode( $data ) .')';
-					echo '</script>';
-				}
 				
 			?>
 			
