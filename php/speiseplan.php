@@ -32,8 +32,6 @@
 					$menu_items[] = $item;
 				}
 
-				
-
 				/* Debug */
 				console_log($menu_items);
 

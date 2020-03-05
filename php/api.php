@@ -128,10 +128,19 @@
 	//		nosy: Diese Woche und nächste anzeigen
 	----------------------------------------------------------------*/
 	function get() {
+		$sql_login = array("user" => "test", "password" => "test");
 		$restaurant = $_POST['restaurant'];
 		$mode = $_POST['mode'];
 
-		//query formatieren
+		// MySQL Verbindung herstellen
+		$pdo_read = new PDO('mysql:host=localhost;dbname=food', $sql_login["user"], $sql_login["password"]);
+
+		$statement = $pdo_read->prepare("SELECT * FROM menuview");
+		$statement->execute();
+
+		while($row = $statement->fetch()) {
+			echo $row;
+		 }
 
 		//absenden mit Read Only Account
 
