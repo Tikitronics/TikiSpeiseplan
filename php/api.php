@@ -132,26 +132,28 @@
 		$restaurant = '';
 		$mode = '';
 		$return_values = [];
+		$sql = "SELECT * FROM menuview";
 
 		if(isset($_GET['restaurant'])) $restaurant = $_GET['restaurant'];
 		if(isset($_GET['mode'])) $restaurant = $_GET['mode'];
 
+		if(isset($restaurant)) $sql = $sql . " WHERE restaurant=" . $restaurant;
+
 		// MySQL Verbindung herstellen
 		$pdo_read = new PDO('mysql:host=localhost;dbname=food', $sql_login["user"], $sql_login["password"]);
 
-		$statement = $pdo_read->prepare("SELECT * FROM menuview");
+		$statement = $pdo_read->prepare($sql);
 		$statement->execute();
 
-		while($row = $statement->fetch()) {
+		while($row = $statement->fetch(PDO::FETCH_ASSOC)) {
 			//console_log($row);
 			$return_values[] = $row;
 		}
 
-		//rückgabe (JSON)
 		$return_json = json_encode($return_values);
 
 		echo $return_json;
-		
+
 		return;
 	}
 
