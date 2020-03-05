@@ -129,8 +129,12 @@
 	----------------------------------------------------------------*/
 	function get() {
 		$sql_login = array("user" => "test", "password" => "test");
-		$restaurant = $_POST['restaurant'];
-		$mode = $_POST['mode'];
+		$restaurant = '';
+		$mode = '';
+		$return_values = [];
+
+		if(isset($_GET['restaurant'])) $restaurant = $_GET['restaurant'];
+		if(isset($_GET['mode'])) $restaurant = $_GET['mode'];
 
 		// MySQL Verbindung herstellen
 		$pdo_read = new PDO('mysql:host=localhost;dbname=food', $sql_login["user"], $sql_login["password"]);
@@ -139,13 +143,15 @@
 		$statement->execute();
 
 		while($row = $statement->fetch()) {
-			echo $row;
-		 }
-
-		//absenden mit Read Only Account
+			//console_log($row);
+			$return_values[] = $row;
+		}
 
 		//rückgabe (JSON)
+		$return_json = json_encode($return_values);
 
+		echo $return_json;
+		
 		return;
 	}
 
