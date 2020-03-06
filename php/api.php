@@ -124,8 +124,8 @@
 	//		zu zeigen. (Default: all)
 	// "mode" konfiguriert die Anzeige:
 	//		archive: Alle vorhandenen Daten zeigen
-	//		default: Diese Woche anzeigen
 	//		nosy: Diese Woche und nächste anzeigen
+	//		[default]: Nur diese Woche anzeigen
 	----------------------------------------------------------------*/
 	function get() {
 		$sql_login = array("user" => "test", "password" => "test");
@@ -134,10 +134,39 @@
 		$return_values = [];
 		$sql = "SELECT * FROM menuview";
 
+		// Prüfe Übergabeparameter und passe SQL Query an
 		if(isset($_GET['restaurant'])) $restaurant = $_GET['restaurant'];
-		if(isset($_GET['mode'])) $restaurant = $_GET['mode'];
+		if(isset($_GET['mode'])) $mode = $_GET['mode'];
 
-		if(isset($restaurant)) $sql = $sql . " WHERE restaurant=" . $restaurant;
+		// Filter für Restaurant
+		$restaurant_filter = '';
+		if(!empty($restaurant)) $restaurant_filter = "WHERE restaurant= '" . $restaurant . "'";
+
+		// Filterung nach Datum
+		$date_filter = '';
+		switch ($mode) {
+			case 'archive':
+				break;
+
+			case 'nosy':
+				// https://stackoverflow.com/questions/2958327/get-date-of-monday-in-current-week-in-php-4
+				$thismonday = strtotime('monday this week');
+				$date_filter = "WHERE Day > '" . date("Y-m-d", $thismonday) . "'";
+				break;
+
+			default:
+				$thismonday = strtotime('monday this week');
+				$thisfriday = strtotime('friday this week');
+				$date_filter = "WHERE Day between '" . date("Y-m-d", $thismonday) . "' and '" . date("Y-m-d", $thisfriday) . "'";
+				break;
+		}
+
+		// Anwenden der Filter falls vorhanden
+		$sql_filter = [];
+		if(!empty($restaurant_filter)) $sql_filter[] = $restaurant_filter;
+		if(!empty($date_filter)) $sql_filter[] = $date_filter;
+		$sql_filter_joined = join(" AND ", $sql_filter);
+		$sql = $sql . ' ' . $sql_filter_joined;
 
 		// MySQL Verbindung herstellen
 		$pdo_read = new PDO('mysql:host=localhost;dbname=food', $sql_login["user"], $sql_login["password"]);
