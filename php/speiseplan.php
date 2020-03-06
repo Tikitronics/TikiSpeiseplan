@@ -4,6 +4,7 @@
 		<title>Speiseplan Kunzmann</title>
 		<meta charset=utf-8>
 		<link href="https://fonts.googleapis.com/css?family=Tangerine:700&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="../style.css">
 	</head>
 		<body>
