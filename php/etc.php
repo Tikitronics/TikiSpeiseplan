@@ -84,6 +84,39 @@ function groupMenuItemsByDate($menu_items) {
 }
 
 /*--------------------------------------------------
+// Schreibt einen Tag als HTML
+// ------------------------------------------------*/
+function writeDay($menu_day) {
+	// Guard clause
+	if(!isset($menu_day)) return;
+	if(count($menu_day) == 0) return;
+
+	$date_day = convertDate($menu_day[0]->day);
+
+	// Ausgabe
+	echo "<div class=\"day\">";
+	echo '<h2>' . $date_day . "</h2>";
+	echo "<table class=\"dishtable\">\n";
+
+	foreach($menu_day as $dish) {
+		echo "<tr>\n<td>\n";
+		// @todo Logo hinzufügen
+		if(isset($dish->restaurant->logoUrl))
+		{
+			echo '<img src="../img/' . $dish->restaurant->logoUrl . '" class="logo">';
+		}
+		
+		echo '<span class="dish">' . $dish->descr . "</span>\n";
+		echo "</td>\n";
+		echo '<td class="priceCell">' . $dish->price . "€</td>\n";
+		echo "</tr>\n";
+	}
+	
+	echo "</table>\n";
+	echo "</div>\n\n";
+}
+
+/*--------------------------------------------------
 // Tag zur Anzeige konvertieren
 // ------------------------------------------------*/
 function convertDate($sql_date) {
@@ -102,6 +135,7 @@ function console_log( $data ){
 	echo 'console.log('. json_encode( $data ) .')';
 	echo '</script>';
 }
+
 
 ?>
 			
