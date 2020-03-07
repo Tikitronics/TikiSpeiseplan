@@ -33,58 +33,47 @@
 					$menu_items[] = $item;
 				}
 
-				/* Debug */
-				console_log($menu_items);
+				/* Debug
+				console_log($menu_items); */
 
 				$grouped_items = groupMenuItemsByDate($menu_items);
 				
-				/* Debug */
-				console_log($grouped_items);
+				/* Debug 
+				console_log($grouped_items); */
 
 
 				foreach($grouped_items as $day) {
 					writeDay($day);
 				}
 				
-				
-				/*--------------------------------------------------
-				// Schreibt einen Tag als HTML
-				// ------------------------------------------------*/
-				function writeDay($menu_day) {
-					// Guard clause
-					if(!isset($menu_day)) return;
-					if(count($menu_day) == 0) return;
-
-					$date_day = convertDate($menu_day[0]->day);
-
-					// Ausgabe
-					echo "<div class=\"day\">";
-					echo '<h2>' . $date_day . "</h2>";
-					echo "<table class=\"dishtable\">\n";
-
-					foreach($menu_day as $dish) {
-						echo "<tr>\n<td>\n";
-						// @todo Logo hinzufügen
-						if(isset($dish->restaurant->logoUrl))
-						{
-							echo '<img src="../img/' . $dish->restaurant->logoUrl . '" class="logo">';
-						}
-						
-						echo '<span class="dish">' . $dish->descr . "</span>\n";
-						echo "</td>\n";
-						echo '<td class="priceCell">' . $dish->price . "€</td>\n";
-						echo "</tr>\n";
-					}
-					
-					echo "</table>\n";
-					echo "</div>\n\n";
-				}
-				
-				
-				
 			?>
 			
 			<image id="imageChef" src="..\img\luigi.png"></image>
+			
+			<script>
+				var imgChef = document.getElementById("imageChef");
+				imgChef.onclick = toggleBackgroundColor;
+
+				// ---------------------------------------------------------
+				// Ändert die Farbe des Hintergrundmusters
+				// ---------------------------------------------------------
+				function toggleBackgroundColor() {
+					console.log("Ay! You clicked me!");
+
+					let style = window.getComputedStyle(document.body);
+					if(style)
+					{
+						let current = style.getPropertyValue('background-image');
+						if(current.includes("rot")) {
+							document.body.style.backgroundImage = "url('../img/karo_blau.png')";
+						}
+						else {
+							document.body.style.backgroundImage = "url('../img/karo_rot.png')";
+						}
+					}
+					console.log(style.getPropertyValue('background-image'));
+				}
+			</script>
 
 		</body>
 </html>

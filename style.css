@@ -1,7 +1,7 @@
 body {
 	font-family: 'Open Sans', sans-serif;
 	text-align: center;
-	background-image: url('img/karo.png');
+	background-image: url('img/karo_rot.png');
 }
 
 .day {
@@ -27,6 +27,7 @@ body {
 }
 
 .priceCell {
+	font-size: large;
 	width: 80px;
 	text-align: right;
 }
@@ -93,5 +94,6 @@ input[type=submit] {
 }
 
 .logo {
+	height: 16px;
 	opacity: 0.5;
 }

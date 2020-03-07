@@ -1,11 +1,10 @@
 // Global Variables
 var inputText = document.getElementById("menuInput");
-let weekDay = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
-let restaurants = [
+var weekDay = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
+var restaurants = [
 	{ name: "Kunzmann", regex: /^kunzmann$/i, image: "../img/mercedes-logo-semi.svg", icon: "../img/mercedes-logo.svg" },
 	{ name: "Team Food", regex: /^team\s?food$/i, image: "../img/teamfood-semi.png", icon: "../img/teamfood_icon.png" },
 ];
-
 
 // Fokussiert und Selektiert den Eingabebereich
 inputText.onfocus = function () {
@@ -48,7 +47,6 @@ function tryParse() {
 
 	renderPreview(menuItems);
 }
-
 
 // ---------------------------------------------------------
 // Prüfe ob gültiges Restaurant angegeben
