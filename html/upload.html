@@ -14,43 +14,38 @@
 					<textarea id="menuInput" name="menuInput" rows="20">Hier Speiseplan-Info einfügen.</textarea>
 				</form>
 			</div>
+
+			<div class="tooltip">HELP
+				<div class="tooltiptext">
+					<!-- = new MenuItem(restaurant, day, date, lineContent[0], lineContent[1], lineContent[2], lineContent[3], lineContent[4],) -->
+					<!-- function MenuItem(restaurant, weekDay, date, descr, addDescr, side, type, price) -->
+					[Restaurat]<br>
+					[Datum]<br>
+					[Beschreibung];[Zusätzl. Beschreibung];[Beilage];[Typ];[Preis]<br>
+					[Beschreibung];[Zusätzl. Beschreibung];[Beilage];[Typ];[Preis]<br>
+					[Datum]<br>
+					[Beschreibung];[Zusätzl. Beschreibung];[Beilage];[Typ];[Preis]<br><br>
+					Beispiel:<br>
+					kunzmann<br>
+					Montag 09.03.2020<br>
+					Hähnchen;Vorbestellung bis Mittwoch;Pommes;Geflügel;4,80€<br>
+					Frikadelle;;Kartoffeln;;4,50€<br>
+					Dienstag 10.03.2020<br>
+					Schnitzel "Diavolo";;Pommes;Schwein;4,80€
+				</div>
+			</div>
 			
 			<!-- Preview-Bereich -->
 			<!-- Hier selbe Formatierung wie im echten Speiseplan -->
 			<h1>Preview</h1>
-			<div id="previewDiv">
-				<div class="day">
-					<h2>Mittwoch, 12.02.2020</h2>
-					<table class="dishtable">
-						<tr>
-							<td>
-								<img src="../img/kunzmann_100px.png" height="20" class="logo">
-								<span class="dish">Hähnchenbrust "Melba" + Pommes</span>
-								<span class="addition">(Vorbestellung bis Mittwoch)</span>
-							</td>
-							<td class="priceCell">
-								4,80€
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<img src="../img/teamfood_100px.png" class="logo">
-								<span class="dish">Käsespätzle mit Speckwürfel</span>
-							</td>
-							<td class="priceCell">
-								4,80€
-							</td>
-						</tr>
-					</table>
-				</div>
-			</div>
+			<div id="previewDiv"></div>
 						
 			<!-- Passwort-Eingabe und Absende-Button -->
 			<div id="submit">
 				<form action="">
 					<!-- <label for="pw">Passwort</label><br> -->
-					<input type="password" id="pw" name="pw" placeholder="Datenbank-Passwort.."><br>
-					<input type="submit" id="submitButton" value="An Server senden">
+					<input type="password" id="pw" name="pw" placeholder="Datenbank-Passwort"><br>
+					<input type="submit" class="submitButton" value="An Server senden">
 				</form>
 			</div>
 			<script src="../js/tikispeiseplan.js" type="text/javascript"></script>

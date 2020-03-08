@@ -32,6 +32,11 @@ body {
 	text-align: right;
 }
 
+h1 {
+	font-family: 'Tangerine', cursive;
+	font-size: 60px;
+}
+
 h2 {
 	font-family: 'Tangerine', cursive;
 	padding: 5px;
@@ -70,16 +75,31 @@ input[type=password] {
   border-radius: 4px;
 }
 
-input[type=submit] {
-  /*width: 100%;
-  background-color: #4CAF50;*/
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+/* https://www.bestcssbuttongenerator.com/#/9 */
+.submitButton {
+	box-shadow:inset 0px 1px 0px 0px #cf866c;
+	background:linear-gradient(to bottom, #d0451b 5%, #bc3315 100%);
+	background-color:#d0451b;
+	border-radius:3px;
+	border:1px solid #942911;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:13px;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #854629;
 }
+.submitButton:hover {
+	background:linear-gradient(to bottom, #bc3315 5%, #d0451b 100%);
+	background-color:#bc3315;
+}
+.submitButton:active {
+	position:relative;
+	top:1px;
+}
+
 
 #imageChef {
 	margin: 10px;
@@ -97,3 +117,38 @@ input[type=submit] {
 	height: 16px;
 	opacity: 0.5;
 }
+
+/* https://www.w3schools.com/css/css_tooltip.asp */
+.tooltip {
+	position: relative;
+	display: inline-block;
+	color: #333;
+	font-size: small;
+	border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  }
+  
+  /* Tooltip text */
+  .tooltip .tooltiptext {
+	visibility: hidden;
+	width: 450px;
+	top: 100%;
+	left: 50%;
+	margin-left: -225px; /* Use half of the width (120/2 = 60), to center the tooltip */
+	background-color: #333;
+	/* opacity: 0.9; */
+	color: #fff;
+	font-size: small;
+	font-style: italic;
+	text-align: left;
+	padding: 8px;
+	border-radius: 6px;
+   
+	/* Position the tooltip text - see examples below! */
+	position: absolute;
+	z-index: 1;
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltip:hover .tooltiptext {
+	visibility: visible;
+  }
