@@ -15,7 +15,8 @@
 	// Klassendefinitionen hinzufügen
 	require_once('classes.php');
 	require_once('etc.php');
-
+	$config = include 'config.php';
+	
 	// GET or POST erlaubt
 	$request_type = $_SERVER['REQUEST_METHOD'];
 
@@ -34,6 +35,7 @@
 	// Bearbeitung POST Request
 	----------------------------------------------------------------*/
 	function post() {
+		global $config;
 		$json = file_get_contents('php://input');
 
 		// Prüfe ob überhaupt Daten übergeben wurden
@@ -51,7 +53,9 @@
 		}
 
 		// MySQL Verbindung herstellen
-		$pdo = new PDO('mysql:host=localhost;dbname=food', 'test', $obj->password);
+		$host = $config['host'];
+		$database = $config['db'];
+		$pdo = new PDO("mysql:host=$host;dbname=$database", $config['user'], $obj->password);
 
 		// Hole zulässige Retaurants ab
 		$restaurants = getRestaurantList($pdo);
@@ -128,7 +132,7 @@
 	//		[default]: Nur diese Woche anzeigen
 	----------------------------------------------------------------*/
 	function get() {
-		$sql_login = array("user" => "test", "password" => "test");
+		global $config; 
 		$restaurant = '';
 		$mode = '';
 		$return_values = [];
@@ -169,7 +173,9 @@
 		$sql = $sql . ' ' . $sql_filter_joined;
 
 		// MySQL Verbindung herstellen
-		$pdo_read = new PDO('mysql:host=localhost;dbname=food', $sql_login["user"], $sql_login["password"]);
+		$host = $config['host'];
+		$database = $config['db'];
+		$pdo_read = new PDO("mysql:host=$host;dbname=$database", $config['user'], $config['pass']);
 
 		$statement = $pdo_read->prepare($sql);
 		$statement->execute();

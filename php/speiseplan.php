@@ -13,9 +13,12 @@
 				// Klassendefinitionen hinzufügen
 				require_once('classes.php');
 				require_once('etc.php');
+				$config = include 'config.php';
 				
 				// MySQL Verbindung herstellen
-				$pdo = new PDO('mysql:host=localhost;dbname=food', 'test', 'test');
+				$host = $config['host'];
+				$database = $config['db'];
+				$pdo = new PDO("mysql:host=$host;dbname=$database", $config['user'], $config['pass']);
 				
 				// Restaurants holen
 				$restaurants = getRestaurantList($pdo);
@@ -58,7 +61,7 @@
 				// Ändert die Farbe des Hintergrundmusters
 				// ---------------------------------------------------------
 				function toggleBackgroundColor() {
-					console.log("Ay! You clicked me!");
+					//console.log("Ay! You clicked me!");
 
 					let style = window.getComputedStyle(document.body);
 					if(style)
