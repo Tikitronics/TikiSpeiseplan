@@ -1,17 +1,4 @@
 <?php
-
-	/*	Erwartetes JSON Format
-	{
-		"password" : "****",
-		"operation": "add",
-		"restaurant": "Kunzmann",
-		"day": "2020-03-02",
-		"description" : "Leggumes",
-		"additional_description" : "mit Soße",
-		"price" : "4.20€"
-	}
-	*/
-
 	// Klassendefinitionen hinzufügen
 	require_once('classes.php');
 	require_once('etc.php');
@@ -33,16 +20,7 @@
 	
 	/* ---------------------------------------------------------------
 	// Bearbeitung POST Request
-	// Momentanes Layout:
-	{
-		"password" : "test",
-		"operation": "add",
-		"restaurant": "kunzmann",
-		"day": "2020-03-09",
-		"description" : "Schitzel\"Joshua\"",
-		"additional_description" : "mit Soße",
-		"price" : "4.80€"
-	}
+	// Format: siehe README.md
 	----------------------------------------------------------------*/
 	function post() {
 		global $config;
@@ -102,7 +80,6 @@
 		if(!isset($obj->restaurant)) $dataValid = false;
 		if(!isset($obj->day)) $dataValid = false;
 		if(!isset($obj->description)) $dataValid = false;
-		if(!isset($obj->additional_description)) $dataValid = false;
 		if(!isset($obj->price)) $dataValid = false;
 		if(!isset($obj->password)) $dataValid = false;
 
@@ -113,12 +90,13 @@
 	// Formatiert die übergebene Daten und sendet sie an die Datenbank
 	// --------------------------------------------------------------*/
 	function sendToDatabase($pdo, $menu_item) {
-		$statement = $pdo->prepare("INSERT INTO menuitem(RestaurantId, Day, Description, AdditionalDescription, Price) VALUES (:rid, :day, :descr, :add, :price)");
+		$statement = $pdo->prepare("INSERT INTO menuitem(RestaurantId, Day, Description, AdditionalDescription, SideDish, FoodType, Price) VALUES (:rid, :day, :descr, :add, :side, :food_type, :price)");
 		$statement->execute([
 			'rid' => $menu_item->restaurant->id,
 			'day' => $menu_item->day,
 			'descr' => $menu_item->descr,
 			'add' => $menu_item->add_descr,
+			'side' => $menu_item->side,
 			'price' => $menu_item->price,
 		]);
 	}
@@ -128,7 +106,9 @@
 	// --------------------------------------------------------------*/
 	function createMenuItem($res, $data)
 	{
-		$menuItem = new MenuItem($data->day, $res, $data->description, $data->price, $data->additional_description, null, null);
+		$menuItem = new MenuItem($data->day, $res, $data->description, $data->price);
+		if(isset($data->additional_description)) $menuItem->add_descr = $data->additional_description;
+		if(isset($data->side)) $menuItem->side = $data->side;
 		return $menuItem;
 	}
 
@@ -140,6 +120,7 @@
 	//		archive: Alle vorhandenen Daten zeigen
 	//		nosy: Diese Woche und nächste anzeigen
 	//		[default]: Nur diese Woche anzeigen
+	//		today: Nur heutigen Speiseplan anzeigen
 	----------------------------------------------------------------*/
 	function get() {
 		global $config; 
@@ -166,6 +147,10 @@
 				// https://stackoverflow.com/questions/2958327/get-date-of-monday-in-current-week-in-php-4
 				$thismonday = strtotime('monday this week');
 				$date_filter = "WHERE Day > '" . date("Y-m-d", $thismonday) . "'";
+				break;
+
+			case 'today':
+				$date_filter = "WHERE Day='" . date("Y-m-d") . "'";
 				break;
 
 			default:

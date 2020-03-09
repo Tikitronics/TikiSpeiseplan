@@ -12,7 +12,7 @@
 				require_once('classes.php');
 				require_once('etc.php');
 
-				$request_url = 'http://localhost/seilo/php/api.php?restaurant=kunzmann&mode=archive';
+				$request_url = 'http://localhost/seilo/php/api.php?mode=archive';
 				$curl = curl_init($request_url);
 
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -25,15 +25,14 @@
 
 				$obj = json_decode($response);
 
-				//console_log($obj);
-
 				$received_items = [];
 
 				foreach ($obj as $data) {
-					// foreach ($item as $prop => $value) {
-					// 	echo "$prop &emsp; $value<br>";		
-					// }
-					$menuItem = new MenuItem($data->Day, $data->RestaurantDisplay, $data->Description, $data->Price, $data->AdditionalDescription, null, null);
+					$menuItem = new MenuItem($data->Day, $data->RestaurantDisplay, $data->Description, $data->Price);
+					$menuItem->id = $data->Id;
+					if(isset($data->AdditionalDescription)) $menuItem->add_descr = $data->AdditionalDescription;
+					if(isset($data->SideDish)) $menuItem->side = $data->SideDish;
+					if(isset($data->RestaurantLogo)) $menuItem->restaurant_logo = $data->RestaurantLogo;
 					$received_items[] = $menuItem;
 				}
 

@@ -48,8 +48,7 @@ function getRestaurantById($id, $restaurants) {
 -------------------------------------------------------------------*/
 function groupMenuItemsByDate($menu_items) {
 	if(!isset($menu_items)) return;
-	if(count($menu_items) == 1) return $menu_items;
-
+	
 	// Sortiere array nach datum (https://stackoverflow.com/questions/4282413/sort-array-of-objects-by-object-fields)
 	usort($menu_items, function($a, $b)
 	{
@@ -105,8 +104,16 @@ function writeDay($menu_day) {
 		{
 			echo '<img src="../img/' . $dish->restaurant->logoUrl . '" class="logo">';
 		}
+		else if(isset($dish->restaurant_logo))
+		{
+			echo '<img src="../img/' . $dish->restaurant_logo . '" class="logo">';
+		}
 		
-		echo '<span class="dish">' . $dish->descr . "</span>\n";
+		$description_line = $dish->descr;
+		if(!empty($dish->side)) $description_line .= " + " . $dish->side;
+		if(!empty($dish->add_descr)) $description_line .= " (" . $dish->add_descr . ")";
+
+		echo '<span class="dish" data-id=' . $dish->id . '>' . $description_line . "</span>\n";
 		echo "</td>\n";
 		echo '<td class="priceCell">' . $dish->price . "€</td>\n";
 		echo "</tr>\n";

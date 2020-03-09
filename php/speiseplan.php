@@ -32,19 +32,12 @@
 				// Hole die Liste der MenuItems von der Datenbank
 				foreach ($pdo->query($sql) as $row) {
 					$resId = $row['RestaurantId'];
-					$item = new MenuItem($row['Day'], getRestaurantById($resId, $restaurants), $row['Description'], $row['Price'], $row['AdditionalDescription'], $row['FoodTypeId'], $row['PictureUrl']);
+					$item = new MenuItem($row['Day'], getRestaurantById($resId, $restaurants), $row['Description'], $row['Price']);
 					$menu_items[] = $item;
 				}
 
-				/* Debug
-				console_log($menu_items); */
-
 				$grouped_items = groupMenuItemsByDate($menu_items);
 				
-				/* Debug 
-				console_log($grouped_items); */
-
-
 				foreach($grouped_items as $day) {
 					writeDay($day);
 				}
