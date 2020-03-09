@@ -33,6 +33,16 @@
 	
 	/* ---------------------------------------------------------------
 	// Bearbeitung POST Request
+	// Momentanes Layout:
+	{
+		"password" : "test",
+		"operation": "add",
+		"restaurant": "kunzmann",
+		"day": "2020-03-09",
+		"description" : "Schitzel\"Joshua\"",
+		"additional_description" : "mit Soße",
+		"price" : "4.80€"
+	}
 	----------------------------------------------------------------*/
 	function post() {
 		global $config;
@@ -47,7 +57,7 @@
 		$obj = json_decode($json);
 
 		// Prüfe übergebene Daten
-		if(!validateData($obj)) {
+		if(!$obj || !validateData($obj)) {
 			echo 'Invalid data in POST request.';
 			return;
 		}

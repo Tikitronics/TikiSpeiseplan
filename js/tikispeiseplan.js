@@ -1,10 +1,16 @@
 // Global Variables
 var inputText = document.getElementById("menuInput");
+var submitButton = document.getElementById("submitButton");
 var weekDay = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
 var restaurants = [
-	{ name: "Kunzmann", regex: /^kunzmann$/i, image: "../img/mercedes-logo-semi.svg", icon: "../img/mercedes-logo.svg" },
-	{ name: "Team Food", regex: /^team\s?food$/i, image: "../img/teamfood-semi.png", icon: "../img/teamfood_icon.png" },
+	{ name: "kunzmann", regex: /^kunzmann$/i, image: "../img/mercedes-logo-semi.svg", icon: "../img/mercedes-logo.svg" },
+	{ name: "teamfood", regex: /^team\s?food$/i, image: "../img/teamfood-semi.png", icon: "../img/teamfood_icon.png" },
 ];
+
+// Variablen, welche die eingegebenen Speiseplandaten enthalten
+var restaurant;
+var menuSegments;
+var menuItems;
 
 // Fokussiert und Selektiert den Eingabebereich
 inputText.onfocus = function () {
@@ -16,6 +22,9 @@ inputText.focus();
 // Event löst bei jedem eingegebenen Zeichen aus
 inputText.oninput = tryParse;
 
+// Upload Button
+submitButton.onclick = uploadMenu;
+
 
 // ---------------------------------------------------------
 // Funktion zum Parsen der Eingabe
@@ -23,7 +32,7 @@ inputText.oninput = tryParse;
 function tryParse() {
 	var text = inputText.value;
 	var lines = text.split(/\r?\n/);
-	var menuItems = new Array();
+	menuItems = new Array();
 
 	// Vorschaubereich zurücksetzen
 	flushPreview();
@@ -31,19 +40,16 @@ function tryParse() {
 	// Prüfe ob Testfeld leer
 	if (lines[0] == null) return;
 
-	var restaurant = checkRestaurant(lines[0]);
-	if (restaurant == null) return;
+	restaurant = checkRestaurant(lines[0]);
+	if (!restaurant) return;
 
-	var menuSegments = extractMenuSegments(lines);
-	if (menuSegments == null) return;
-
-	console.log("Yo!");
+	menuSegments = extractMenuSegments(lines);
+	if (!menuSegments) return;
 
 	for(var seg of menuSegments) {
 		var newItems = parseMenuSegment(seg, restaurant);
 		menuItems.push(newItems);
 	}
-	console.log(menuItems);
 
 	renderPreview(menuItems);
 }
@@ -277,3 +283,24 @@ function flushPreview() {
 
 	previewSection.innerHTML = "";
 }
+
+// ---------------------------------------------------------
+// Speiseplan Upload AJAX
+// ---------------------------------------------------------
+function uploadMenu() {
+	var xhttp = new XMLHttpRequest();
+
+	xhttp.onreadystatechange = function() {
+	  if (this.readyState == 4 && this.status == 200) {
+		alert("Alles klar! Server hat geantwortet: " + this.responseText);
+	  }
+	};
+
+	//$payload = JSON.stringify(menuItems);
+
+	xhttp.open("POST", "../PHP/api.php", true);
+	xhttp.setRequestHeader("Content-type", "application/json");
+  	xhttp.send($payload);
+}
+
+
