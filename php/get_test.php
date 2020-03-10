@@ -45,29 +45,10 @@
 
 			<image id="imageChef" src="..\img\luigi.png"></image>
 			
+			<script src="../js/tikispeiseplan.js" type="text/javascript"></script>
 			<script>
 				var imgChef = document.getElementById("imageChef");
 				imgChef.onclick = toggleBackgroundColor;
-
-				// ---------------------------------------------------------
-				// Ändert die Farbe des Hintergrundmusters
-				// ---------------------------------------------------------
-				function toggleBackgroundColor() {
-					console.log("Ay! You clicked me!");
-
-					let style = window.getComputedStyle(document.body);
-					if(style)
-					{
-						let current = style.getPropertyValue('background-image');
-						if(current.includes("rot")) {
-							document.body.style.backgroundImage = "url('../img/karo_blau.png')";
-						}
-						else {
-							document.body.style.backgroundImage = "url('../img/karo_rot.png')";
-						}
-					}
-					console.log(style.getPropertyValue('background-image'));
-				}
 			</script>
 		</body>
 </html>

@@ -3,8 +3,8 @@ var inputText = document.getElementById("menuInput");
 var submitButton = document.getElementById("submitButton");
 var weekDay = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
 var restaurants = [
-	{ name: "kunzmann", regex: /^kunzmann$/i, image: "../img/mercedes-logo-semi.svg", icon: "../img/mercedes-logo.svg" },
-	{ name: "teamfood", regex: /^team\s?food$/i, image: "../img/teamfood-semi.png", icon: "../img/teamfood_icon.png" },
+	{ name: "kunzmann", regex: /^kunzmann$/i, image: "../img/res_kunzmann_logo.svg"},
+	{ name: "teamfood", regex: /^team\s?food$/i, image: "../img/res_teamfood_logo.png" },
 ];
 
 // Variablen, welche die eingegebenen Speiseplandaten enthalten
@@ -301,6 +301,26 @@ function uploadMenu() {
 	xhttp.open("POST", "../PHP/api.php", true);
 	xhttp.setRequestHeader("Content-type", "application/json");
   	xhttp.send($payload);
+}
+
+// ---------------------------------------------------------
+// Ändert die Farbe des Hintergrundmusters
+// ---------------------------------------------------------
+function toggleBackgroundColor() {
+	console.log("Ay! You clicked me!");
+
+	let style = window.getComputedStyle(document.body);
+	if(style)
+	{
+		let current = style.getPropertyValue('background-image');
+		if(current.includes("red")) {
+			document.body.style.backgroundImage = "url('../img/bg_blue.png')";
+		}
+		else {
+			document.body.style.backgroundImage = "url('../img/bg_red.png')";
+		}
+	}
+	console.log(style.getPropertyValue('background-image'));
 }
 
 
