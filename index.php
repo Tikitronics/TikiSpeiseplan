@@ -4,15 +4,17 @@
 		<title>Speiseplan Kunzmann GET_Test</title>
 		<meta charset=utf-8>
 		<link href="https://fonts.googleapis.com/css?family=Tangerine:700&display=swap" rel="stylesheet">
-		<link rel="stylesheet" href="../style.css">
+		<link rel="stylesheet" href="style.css">
 	</head>
 		<body>
 			<?php
 				// Klassendefinitionen hinzufügen
-				require_once('classes.php');
-				require_once('etc.php');
+				require_once('php/classes.php');
+				require_once('php/etc.php');
 
-				$request_url = 'http://localhost/seilo/php/api.php?mode=archive';
+				//https://stackoverflow.com/questions/6768793/get-the-full-url-in-php
+				$request_url = 'http://' . $_SERVER['HTTP_HOST'] . '/' . dirname($_SERVER['REQUEST_URI']) . '/php/api.php?mode=archive';
+
 				$curl = curl_init($request_url);
 
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -43,9 +45,9 @@
 				}
 			?>
 
-			<image id="imageChef" src="..\img\luigi.png"></image>
+			<image id="imageChef" src="img\luigi.png"></image>
 			
-			<script src="../js/tikispeiseplan.js" type="text/javascript"></script>
+			<script src="js/tikispeiseplan.js" type="text/javascript"></script>
 			<script>
 				var imgChef = document.getElementById("imageChef");
 				imgChef.onclick = toggleBackgroundColor;

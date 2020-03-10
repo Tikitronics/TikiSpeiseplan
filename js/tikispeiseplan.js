@@ -314,10 +314,10 @@ function toggleBackgroundColor() {
 	{
 		let current = style.getPropertyValue('background-image');
 		if(current.includes("red")) {
-			document.body.style.backgroundImage = "url('../img/bg_blue.png')";
+			document.body.style.backgroundImage = "url('img/bg_blue.png')";
 		}
 		else {
-			document.body.style.backgroundImage = "url('../img/bg_red.png')";
+			document.body.style.backgroundImage = "url('img/bg_red.png')";
 		}
 	}
 	console.log(style.getPropertyValue('background-image'));

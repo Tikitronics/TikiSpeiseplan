@@ -102,11 +102,11 @@ function writeDay($menu_day) {
 		// @todo Logo hinzufügen
 		if(isset($dish->restaurant->logoUrl))
 		{
-			echo '<img src="../img/' . $dish->restaurant->logoUrl . '" class="logo">';
+			echo '<img src="img/' . $dish->restaurant->logoUrl . '" class="logo">';
 		}
 		else if(isset($dish->restaurant_logo))
 		{
-			echo '<img src="../img/' . $dish->restaurant_logo . '" class="logo">';
+			echo '<img src="img/' . $dish->restaurant_logo . '" class="logo">';
 		}
 		
 		$description_line = $dish->descr;
