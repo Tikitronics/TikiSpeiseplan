@@ -1,7 +1,7 @@
 <!doctype HTML>
 <html>
 	<head>
-		<title>Speiseplan Kunzmann GET_Test</title>
+		<title>Inoffizieller INRO Speiseplan</title>
 		<meta charset=utf-8>
 		<link href="https://fonts.googleapis.com/css?family=Tangerine:700&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="style.css">
@@ -27,6 +27,7 @@
 
 				$obj = json_decode($response);
 
+				if(!isset($obj)) return;
 				$received_items = [];
 
 				foreach ($obj as $data) {
