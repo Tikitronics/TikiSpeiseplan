@@ -28,6 +28,7 @@
 				$obj = json_decode($response);
 
 				if(!isset($obj)) return;
+				
 				$received_items = [];
 
 				foreach ($obj as $data) {
