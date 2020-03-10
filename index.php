@@ -27,23 +27,26 @@
 
 				$obj = json_decode($response);
 
-				if(!isset($obj)) return;
-				
-				$received_items = [];
+				if(isset($obj)) {
+					$received_items = [];
 
-				foreach ($obj as $data) {
-					$menuItem = new MenuItem($data->Day, $data->RestaurantDisplay, $data->Description, $data->Price);
-					$menuItem->id = $data->Id;
-					if(isset($data->AdditionalDescription)) $menuItem->add_descr = $data->AdditionalDescription;
-					if(isset($data->SideDish)) $menuItem->side = $data->SideDish;
-					if(isset($data->RestaurantLogo)) $menuItem->restaurant_logo = $data->RestaurantLogo;
-					$received_items[] = $menuItem;
+					foreach ($obj as $data) {
+						$menuItem = new MenuItem($data->Day, $data->RestaurantDisplay, $data->Description, $data->Price);
+						$menuItem->id = $data->Id;
+						if(isset($data->AdditionalDescription)) $menuItem->add_descr = $data->AdditionalDescription;
+						if(isset($data->SideDish)) $menuItem->side = $data->SideDish;
+						if(isset($data->RestaurantLogo)) $menuItem->restaurant_logo = $data->RestaurantLogo;
+						$received_items[] = $menuItem;
+					}
+
+					$grouped_items = groupMenuItemsByDate($received_items);
+
+					foreach($grouped_items as $day) {
+						writeDay($day);
+					}
 				}
-
-				$grouped_items = groupMenuItemsByDate($received_items);
-
-				foreach($grouped_items as $day) {
-					writeDay($day);
+				else {
+					echo '<h2>porca miseria, keine Daten empfangen!</h2>';
 				}
 			?>
 
