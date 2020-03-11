@@ -1,29 +1,35 @@
 // Global Variables
 var inputText = document.getElementById("menuInput");
 var submitButton = document.getElementById("submitButton");
-var weekDay = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
+var weekDays = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
 var restaurants = [
-	{ name: "kunzmann", regex: /^kunzmann$/i, image: "../img/res_kunzmann_logo.svg"},
-	{ name: "teamfood", regex: /^team\s?food$/i, image: "../img/res_teamfood_logo.png" },
+	{ name: "kunzmann", regex: /^kunzmann$/i, image: "img/res_kunzmann_logo.svg"},
+	{ name: "teamfood", regex: /^team\s?food$/i, image: "img/res_teamfood_logo.png" },
 ];
+// Datum muss im ISO Format sein https://www.w3schools.com/js/js_date_formats.asp
+var dateFormat = /\d{4}-\d{2}.\d{2}/;
 
 // Variablen, welche die eingegebenen Speiseplandaten enthalten
 var restaurant;
 var menuSegments;
 var menuItems;
 
-// Fokussiert und Selektiert den Eingabebereich
-inputText.onfocus = function () {
-	inputText.select();
+// Wenn das Element inputText nicht gefunden wurde, sind wir in der falschen Datei
+if(inputText)
+{
+	// Fokussiert und Selektiert den Eingabebereich
+	inputText.onfocus = function () {
+		inputText.select();
+	}
+
+	inputText.focus();
+
+	// Event löst bei jedem eingegebenen Zeichen aus
+	inputText.oninput = tryParse;
+
+	// Upload Button
+	submitButton.onclick = uploadMenu;
 }
-
-inputText.focus();
-
-// Event löst bei jedem eingegebenen Zeichen aus
-inputText.oninput = tryParse;
-
-// Upload Button
-submitButton.onclick = uploadMenu;
 
 
 // ---------------------------------------------------------
@@ -85,12 +91,9 @@ function extractMenuSegments(lineArray) {
 	var weekDayLines = new Array();
 	var i;
 
-	// -- Finde Zeilen, die Wochentage enthalten
+	// -- Finde Zeilen, die gültiges Datum enthalten
 	for (i = 0; i < lineArray.length; i++) {
-		for (var d of weekDay) {
-			var reg = new RegExp(d, "i");
-			if (reg.test(lineArray[i])) weekDayLines.push(i);
-		}
+		if (dateFormat.test(lineArray[i])) weekDayLines.push(i);
 	}
 	if (weekDayLines.length == 0) return null;
 	//console.log(weekDayLines);
@@ -113,10 +116,7 @@ function extractMenuSegments(lineArray) {
 function parseMenuSegment(menuSegment, restaurant) {
 	var segmentContent;
 	var menuItems = new Array();
-	var dateRegEx = /\d{1,2}.\d{1,2}.\d{2,4}/;
-	var day;
 	var date;
-	var i;
 
 	// Guard Clauses
 	if (!menuSegment) {
@@ -128,22 +128,24 @@ function parseMenuSegment(menuSegment, restaurant) {
 		return;
 	}
 
+	// slice nimmt ein Teilarray (ab Element mit Index 1)
 	segmentContent = menuSegment.slice(1);
 
 	// Datum extrahieren
-	for (i = 0; i < weekDay.length; i++) {
-		date = dateRegEx.exec(menuSegment[0]);
-		var reg = new RegExp(weekDay[i], "i");
-		if (reg.test(menuSegment[0])) {
-			day = weekDay[i];
-		}
-	}
+	var date = new Date(dateFormat.exec(menuSegment[0]));
+	// for (i = 0; i < weekDay.length; i++) {
+	// 	date = );
+	// 	var reg = new RegExp(weekDay[i], "i");
+	// 	if (reg.test(menuSegment[0])) {
+	// 		day = weekDay[i];
+	// 	}
+	// }
 
 	// Inhalt extrahieren
 	// Format: Beschreibung; Zusätzliche Beschreibung; Beilage; Typ; Preis
 	for (var line of segmentContent) {
 		var lineContent = line.split(';');
-		var item = new MenuItem(restaurant, day, date, lineContent[0], lineContent[1], lineContent[2], lineContent[3], lineContent[4],)
+		var item = new MenuItem(restaurant, date, lineContent[0], lineContent[1], lineContent[2], lineContent[3], lineContent[4],)
 		menuItems.push(item);
 	}
 
@@ -153,9 +155,8 @@ function parseMenuSegment(menuSegment, restaurant) {
 // ---------------------------------------------------------
 // Konstruktor MenuItem
 // ---------------------------------------------------------
-function MenuItem(restaurant, weekDay, date, descr, addDescr, side, type, price) {
+function MenuItem(restaurant, date, descr, addDescr, side, type, price) {
 	this.restaurant = restaurant;
-	this.weekDay = weekDay;
 	this.date = date;
 	this.descr = descr;
 	this.addDescr = addDescr;
@@ -216,8 +217,8 @@ function renderPreview(menuItems) {
 		sec.className = "day";
 
 		var header = document.createElement("h2");
-		var dateText = menuDay[0].weekDay;
-		if(menuDay[0].date) dateText += ", " + menuDay[0].date;
+		var date = menuDay[0].date;			// Datum kann aus beliebigem Element genommen werden, hier 0
+		var dateText = weekDays[date.getDay()] + ', ' + date.getDate().toString().padStart(2, '0') + '.' + (date.getMonth(date) + 1).toString().padStart(2, '0') + '.' + date.getFullYear();
 		header.innerText = dateText;
 
 		var table = document.createElement("table");
