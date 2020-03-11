@@ -111,9 +111,11 @@ function writeDay($menu_day) {
 		
 		$description_line = $dish->descr;
 		if(!empty($dish->side)) $description_line .= " + " . $dish->side;
-		if(!empty($dish->add_descr)) $description_line .= " (" . $dish->add_descr . ")";
 
 		echo '<span class="dish" data-id=' . $dish->id . '>' . $description_line . "</span>\n";
+		if(!empty($dish->add_descr)) {
+			echo "<br>\n<span class=\"addition\">" . $dish->add_descr . "</span>\n";
+		}
 		echo "</td>\n";
 		echo '<td class="priceCell">' . $dish->price . "€</td>\n";
 		echo "</tr>\n";

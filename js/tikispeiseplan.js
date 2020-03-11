@@ -3,8 +3,8 @@ var inputText = document.getElementById("menuInput");
 var submitButton = document.getElementById("submitButton");
 var weekDays = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
 var restaurants = [
-	{ name: "kunzmann", regex: /^kunzmann$/i, image: "img/res_kunzmann_logo.svg"},
-	{ name: "teamfood", regex: /^team\s?food$/i, image: "img/res_teamfood_logo.png" },
+	{ name: "kunzmann", regex: /^kunzmann$/i, image: "img/res_kunzmann_logo.svg", icon:"img/res_kunzmann_icon.png"},
+	{ name: "teamfood", regex: /^team\s?food$/i, image: "img/res_teamfood_logo.png", icon:"img/res_teamfood_icon.png" },
 ];
 // Datum muss im ISO Format sein https://www.w3schools.com/js/js_date_formats.asp
 var dateFormat = /\d{4}-\d{2}.\d{2}/;
@@ -252,12 +252,30 @@ function formPreviewRow(dish)
 {
 	// Zelle für Gericht
 	var mainCell = document.createElement("td");
+
+	// Logo
+	var logo = document.createElement("img");
+	logo.setAttribute("src", restaurant.icon);
+	logo.className = "logo";
+	mainCell.appendChild(logo);
+
+	// Haupttext
 	var mainText = document.createElement("span");
 	mainText.className = "dish";
 	var descr = dish.descr;
 	if(dish.side) descr += " + " + dish.side;
 	mainText.innerText = descr;
 	mainCell.appendChild(mainText);
+
+	// Additional Description falls vorhanden
+	if(dish.addDescr) {
+		var br = document.createElement("br");
+		mainCell.appendChild(br);
+		var addSpan = document.createElement("span");
+		addSpan.innerText = dish.addDescr;
+		addSpan.className = "addition";
+		mainCell.appendChild(addSpan);
+	}
 
 	// Zelle für Preis
 	var priceCell = document.createElement("td");
