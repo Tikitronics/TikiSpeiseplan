@@ -17,8 +17,8 @@ body {
 }
 
 .dish {
-	font-family: 'Tangerine', cursive;
-	font-size: 32px;
+	font-family: 'Raleway', sans-serif;
+	font-size: 20px;
 	margin-left: 20px;
 }
 
@@ -112,7 +112,20 @@ input[type=password] {
 }
 
 #imageChef:hover {
-	opacity: 0.3;
+	opacity: 0.2;
+}
+
+
+@media screen and (max-height: 784px) {
+	#imageChef {
+		max-height: 50%;
+	}
+}
+
+@media screen and (max-width: 1200px) {
+	#imageChef {
+		opacity:0.15;
+	}
 }
 
 .logo {

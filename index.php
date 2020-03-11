@@ -4,6 +4,7 @@
 		<title>Inoffizieller INRO Speiseplan</title>
 		<meta charset=utf-8>
 		<link href="https://fonts.googleapis.com/css?family=Tangerine:700&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Raleway:400i&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="style.css">
 	</head>
 		<body>
