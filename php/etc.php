@@ -47,7 +47,7 @@ function getRestaurantById($id, $restaurants) {
 // gruppiert sind.
 -------------------------------------------------------------------*/
 function groupMenuItemsByDate($menu_items) {
-	if(!isset($menu_items)) return;
+	if(!isset($menu_items) || empty($menu_items)) return;
 	
 	// Sortiere array nach datum (https://stackoverflow.com/questions/4282413/sort-array-of-objects-by-object-fields)
 	usort($menu_items, function($a, $b)

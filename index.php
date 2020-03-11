@@ -11,12 +11,22 @@
 				// Klassendefinitionen hinzufügen
 				require_once('php/classes.php');
 				require_once('php/etc.php');
+				$config = include 'php/config.php';
+				$api_url = $config['api_url'];
 
-				//https://stackoverflow.com/questions/6768793/get-the-full-url-in-php
-				$request_url = 'http://' . $_SERVER['HTTP_HOST'] . '/' . dirname($_SERVER['REQUEST_URI']) . '/php/api.php?mode=archive';
-
-				$curl = curl_init($request_url);
-
+				// GET Parameter prüfen (Bedeutung siehe api.php)
+				$get_params = [];				
+				if(isset($_GET['restaurant'])) {
+					$get_params['restaurant'] = $_GET['restaurant'];
+				}
+				if(isset($_GET['mode'])) {
+					$get_params['mode'] = $_GET['mode'];
+				}
+				if(!empty($get_params)) {
+					$api_url .= '?' . http_build_query($get_params);
+				}
+				
+				$curl = curl_init($api_url);
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 				curl_setopt($curl, CURLOPT_HTTPHEADER, [
 					'Content-Type: application/json'
@@ -27,7 +37,7 @@
 
 				$obj = json_decode($response);
 
-				if(isset($obj)) {
+				if(isset($obj) && !empty($obj)) {
 					$received_items = [];
 
 					foreach ($obj as $data) {
@@ -41,12 +51,17 @@
 
 					$grouped_items = groupMenuItemsByDate($received_items);
 
-					foreach($grouped_items as $day) {
-						writeDay($day);
+					if(isset($grouped_items)) {
+						foreach($grouped_items as $day) {
+							writeDay($day);
+						}
+					}
+					else {
+						echo '<h2>porca miseria, kein Speiseplan gefunden!</h2>';
 					}
 				}
 				else {
-					echo '<h2>porca miseria, keine Daten empfangen!</h2>';
+					echo '<h2>porca miseria, kein Speiseplan gefunden!</h2>';
 				}
 			?>
 

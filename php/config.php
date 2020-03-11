@@ -4,6 +4,7 @@ return [
     'host' => 'localhost',
     'db' => 'food',
     'user' => 'test',
-    'pass' => 'test'
+    'pass' => 'test',
+    'api_url' => 'http://localhost/seilo/php/api.php'
 ];
 ?>

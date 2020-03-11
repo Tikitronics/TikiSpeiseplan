@@ -43,7 +43,7 @@
 		// MySQL Verbindung herstellen
 		$host = $config['host'];
 		$database = $config['db'];
-		$pdo = new PDO("mysql:host=$host;dbname=$database", $config['user'], $obj->password);
+		$pdo = new PDO("mysql:host=$host;dbname=$database;charset=utf8", $config['user'], $obj->password);
 
 		// Hole zulässige Retaurants ab
 		$restaurants = getRestaurantList($pdo);
@@ -170,7 +170,7 @@
 		// MySQL Verbindung herstellen
 		$host = $config['host'];
 		$database = $config['db'];
-		$pdo_read = new PDO("mysql:host=$host;dbname=$database", $config['user'], $config['pass']);
+		$pdo_read = new PDO("mysql:host=$host;dbname=$database;charset=utf8", $config['user'], $config['pass']);
 
 		$statement = $pdo_read->prepare($sql);
 		$statement->execute();
