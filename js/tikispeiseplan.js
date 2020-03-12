@@ -147,7 +147,9 @@ function parseMenuSegment(menuSegment, restaurant) {
 	// Format: Beschreibung; Zusätzliche Beschreibung; Beilage; Typ; Preis
 	for (var line of segmentContent) {
 		var lineContent = line.split(';');
-		var item = new MenuItem(restaurant, date, lineContent[0], lineContent[1], lineContent[2], lineContent[3], lineContent[4].replace(",", "."));
+		let price = lineContent[4];
+		if(price) price.replace(",", ".");
+		var item = new MenuItem(restaurant, date, lineContent[0], lineContent[1], lineContent[2], lineContent[3], price);
 		menuItems.push(item);
 	}
 
@@ -281,7 +283,11 @@ function formPreviewRow(dish)
 
 	// Zelle für Preis
 	var priceCell = document.createElement("td");
-	priceCell.innerText = dish.price.replace(".", ",") || "";
+	if(dish.price) {
+		priceCell.innerText = dish.price.replace(".", ",");
+	}
+	else priceCell.innerText = "";
+	
 	priceCell.className = "priceCell";
 
 	// Zu Zeile zusammenfügen
