@@ -354,7 +354,7 @@ function uploadMenu() {
 
 	var postData = JSON.stringify(postArray);
 
-	xhttp.open("POST", "PHP/api.php", true);
+	xhttp.open("POST", "php/api.php", true);
 	xhttp.setRequestHeader("Content-type", "application/json");
   	xhttp.send(postData);
 }
