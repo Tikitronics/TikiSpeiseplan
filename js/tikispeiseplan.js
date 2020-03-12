@@ -58,6 +58,8 @@ function tryParse() {
 	}
 
 	renderPreview(menuItems);
+
+	return menuItems;
 }
 
 // ---------------------------------------------------------
@@ -145,7 +147,7 @@ function parseMenuSegment(menuSegment, restaurant) {
 	// Format: Beschreibung; Zusätzliche Beschreibung; Beilage; Typ; Preis
 	for (var line of segmentContent) {
 		var lineContent = line.split(';');
-		var item = new MenuItem(restaurant, date, lineContent[0], lineContent[1], lineContent[2], lineContent[3], lineContent[4],)
+		var item = new MenuItem(restaurant, date, lineContent[0], lineContent[1], lineContent[2], lineContent[3], lineContent[4].replace(",", "."));
 		menuItems.push(item);
 	}
 
@@ -279,7 +281,7 @@ function formPreviewRow(dish)
 
 	// Zelle für Preis
 	var priceCell = document.createElement("td");
-	priceCell.innerText = dish.price || "";
+	priceCell.innerText = dish.price.replace(".", ",") || "";
 	priceCell.className = "priceCell";
 
 	// Zu Zeile zusammenfügen
@@ -307,19 +309,48 @@ function flushPreview() {
 // Speiseplan Upload AJAX
 // ---------------------------------------------------------
 function uploadMenu() {
+	var pass = document.getElementById("pw").value;
+
+	if(!pass) {
+		alert ("Bitte Passwort eingeben");
+		return;
+	}
+	
+	var postArray = new Array();
+	var menuItems = tryParse();
+	
+	// Formatiere Array für JSON übergabe
+	for (const day of menuItems) {
+		for(const mi of day) {
+			var item = {
+				password: pass,
+				operation: "add",
+				restaurant: mi.restaurant.name,
+				day: mi.date.toISOString().slice(0,10),
+				description: mi.descr,
+				additional_description: mi.addDescr,
+				side: mi.side,
+				price: mi.price
+			}
+		}
+
+		postArray.push(item);
+	}
+
 	var xhttp = new XMLHttpRequest();
 
 	xhttp.onreadystatechange = function() {
 	  if (this.readyState == 4 && this.status == 200) {
-		alert("Alles klar! Server hat geantwortet: " + this.responseText);
+		alert("Alles klar!");
+		//alert("Alles klar! Server hat geantwortet: " + this.responseText);
 	  }
 	};
 
-	//$payload = JSON.stringify(menuItems);
+	var postData = JSON.stringify(postArray);
 
-	xhttp.open("POST", "../PHP/api.php", true);
+	xhttp.open("POST", "PHP/api.php", true);
 	xhttp.setRequestHeader("Content-type", "application/json");
-  	xhttp.send($payload);
+  	xhttp.send(postData);
 }
 
 // ---------------------------------------------------------

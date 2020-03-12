@@ -34,35 +34,42 @@
 
 		$obj = json_decode($json);
 
-		// Prüfe übergebene Daten
-		if(!$obj || !validateData($obj)) {
+		// Prüfe übergebenes Datenformat
+		if(!$obj || !is_array($obj) || empty($obj)) {
 			echo 'Invalid data in POST request.';
 			return;
 		}
 
-		// MySQL Verbindung herstellen
-		$host = $config['host'];
-		$database = $config['db'];
-		$pdo = new PDO("mysql:host=$host;dbname=$database;charset=utf8", $config['user'], $obj->password);
+		foreach($obj AS $item) {
+			if (!validateData($item)) {
+				echo 'Invalid data in POST request.';
+				continue;
+			}
 
-		// Hole zulässige Retaurants ab
-		$restaurants = getRestaurantList($pdo);
-		$restaurant = getRestaurantByName($obj->restaurant, $restaurants);
-		if(!isset($restaurant)) {
-			echo 'Restaurant unknonwn.';
-			return;
-		}
+			// MySQL Verbindung herstellen
+			$host = $config['host'];
+			$database = $config['db'];
+			$pdo = new PDO("mysql:host=$host;dbname=$database;charset=utf8", $config['update_user'], $item->password);
 
-		// Erstelle MenuItem Objekt
-		$menu_item = createMenuItem($restaurant, $obj);
+			// Hole zulässige Retaurants ab
+			$restaurants = getRestaurantList($pdo);
+			$restaurant = getRestaurantByName($item->restaurant, $restaurants);
+			if(!isset($restaurant)) {
+				echo 'Restaurant unknonwn.';
+				return;
+			}
 
-		// Sende die Daten an die Datenbank
-		if($obj->operation == "add") {
-			sendToDatabase($pdo, $menu_item);
-		}
-		else {
-			echo "Unknown Request";
-			return;
+			// Erstelle MenuItem Objekt
+			$menu_item = createMenuItem($restaurant, $item);
+
+			// Sende die Daten an die Datenbank
+			if($item->operation == "add") {
+				sendToDatabase($pdo, $menu_item);
+			}
+			else {
+				echo "Unknown Request";
+				return;
+			}
 		}
 	}
 
@@ -90,7 +97,7 @@
 	// Formatiert die übergebene Daten und sendet sie an die Datenbank
 	// --------------------------------------------------------------*/
 	function sendToDatabase($pdo, $menu_item) {
-		$statement = $pdo->prepare("INSERT INTO menuitem(RestaurantId, Day, Description, AdditionalDescription, SideDish, FoodType, Price) VALUES (:rid, :day, :descr, :add, :side, :food_type, :price)");
+		$statement = $pdo->prepare("INSERT INTO menuitem(RestaurantId, Day, Description, AdditionalDescription, SideDish, Price) VALUES (:rid, :day, :descr, :add, :side, :price)");
 		$statement->execute([
 			'rid' => $menu_item->restaurant->id,
 			'day' => $menu_item->day,
@@ -135,7 +142,7 @@
 
 		// Filter für Restaurant
 		$restaurant_filter = '';
-		if(!empty($restaurant)) $restaurant_filter = "WHERE restaurant= '" . $restaurant . "'";
+		if(!empty($restaurant)) $restaurant_filter = "Restaurant='" . $restaurant . "'";
 
 		// Filterung nach Datum
 		$date_filter = '';
@@ -146,17 +153,17 @@
 			case 'nosy':
 				// https://stackoverflow.com/questions/2958327/get-date-of-monday-in-current-week-in-php-4
 				$thismonday = strtotime('monday this week');
-				$date_filter = "WHERE Day > '" . date("Y-m-d", $thismonday) . "'";
+				$date_filter = "Day > '" . date("Y-m-d", $thismonday) . "'";
 				break;
 
 			case 'today':
-				$date_filter = "WHERE Day='" . date("Y-m-d") . "'";
+				$date_filter = "Day='" . date("Y-m-d") . "'";
 				break;
 
 			default:
 				$thismonday = strtotime('monday this week');
 				$thisfriday = strtotime('friday this week');
-				$date_filter = "WHERE Day between '" . date("Y-m-d", $thismonday) . "' and '" . date("Y-m-d", $thisfriday) . "'";
+				$date_filter = "Day between '" . date("Y-m-d", $thismonday) . "' and '" . date("Y-m-d", $thisfriday) . "'";
 				break;
 		}
 
@@ -164,9 +171,14 @@
 		$sql_filter = [];
 		if(!empty($restaurant_filter)) $sql_filter[] = $restaurant_filter;
 		if(!empty($date_filter)) $sql_filter[] = $date_filter;
-		$sql_filter_joined = join(" AND ", $sql_filter);
-		$sql = $sql . ' ' . $sql_filter_joined;
+		if(!empty($sql_filter)) {
+			$sql_filter_joined = join(" AND ", $sql_filter);
+			$sql = $sql . ' WHERE ' . $sql_filter_joined;
+		}
 
+		// Ordnungskriterium
+		$sql .= " ORDER BY Day, Restaurant";
+		
 		// MySQL Verbindung herstellen
 		$host = $config['host'];
 		$database = $config['db'];
