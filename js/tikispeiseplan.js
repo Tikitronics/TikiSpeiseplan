@@ -254,14 +254,16 @@ function renderPreview(menuItems) {
 // ---------------------------------------------------------
 function formPreviewRow(dish)
 {
-	// Zelle für Gericht
-	var mainCell = document.createElement("td");
-
-	// Logo
+	// Zelle für Logo
+	var logoCell = document.createElement("td");
+	logoCell.className = "logoCell";
 	var logo = document.createElement("img");
 	logo.setAttribute("src", restaurant.icon);
 	logo.className = "logo";
-	mainCell.appendChild(logo);
+	logoCell.appendChild(logo);
+
+	// Zelle für Gericht
+	var mainCell = document.createElement("td");
 
 	// Haupttext
 	var mainText = document.createElement("span");
@@ -292,6 +294,7 @@ function formPreviewRow(dish)
 
 	// Zu Zeile zusammenfügen
 	var row = document.createElement("tr");
+	row.appendChild(logoCell);
 	row.appendChild(mainCell);
 	row.appendChild(priceCell);
 

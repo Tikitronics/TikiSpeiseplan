@@ -98,8 +98,10 @@ function writeDay($menu_day) {
 	echo "<table class=\"dishtable\">\n";
 
 	foreach($menu_day as $dish) {
-		echo "<tr>\n<td>\n";
-		// @todo Logo hinzufügen
+		echo "<tr>\n";
+
+		// Logo
+		echo "<td class=\"logoCell\">\n";
 		if(isset($dish->restaurant->logoUrl))
 		{
 			echo '<img src="img/' . $dish->restaurant->logoUrl . '" class="logo">';
@@ -108,7 +110,10 @@ function writeDay($menu_day) {
 		{
 			echo '<img src="img/' . $dish->restaurant_logo . '" class="logo">';
 		}
-		
+		echo "</td>\n";
+
+		// Beschreibung
+		echo "<td>\n";
 		$description_line = $dish->descr;
 		if(!empty($dish->side)) $description_line .= " + " . $dish->side;
 
@@ -117,6 +122,8 @@ function writeDay($menu_day) {
 			echo "<br>\n<span class=\"addition\">" . $dish->add_descr . "</span>\n";
 		}
 		echo "</td>\n";
+
+		// Preis
 		echo '<td class="priceCell">' . $dish->price . "€</td>\n";
 		echo "</tr>\n";
 	}
