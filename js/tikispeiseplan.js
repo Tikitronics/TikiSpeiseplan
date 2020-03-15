@@ -135,21 +135,17 @@ function parseMenuSegment(menuSegment, restaurant) {
 
 	// Datum extrahieren
 	var date = new Date(dateFormat.exec(menuSegment[0]));
-	// for (i = 0; i < weekDay.length; i++) {
-	// 	date = );
-	// 	var reg = new RegExp(weekDay[i], "i");
-	// 	if (reg.test(menuSegment[0])) {
-	// 		day = weekDay[i];
-	// 	}
-	// }
 
 	// Inhalt extrahieren
 	// Format: Beschreibung; Zusätzliche Beschreibung; Beilage; Typ; Preis
 	for (var line of segmentContent) {
 		var lineContent = line.split(';');
 		let price = lineContent[4];
-		if(price) price.replace(",", ".");
-		var item = new MenuItem(restaurant, date, lineContent[0], lineContent[1], lineContent[2], lineContent[3], price);
+		if(price) {
+			price = price.replace(",", ".");
+			price = price.replace("€", "");
+		}
+		var item = new MenuItem(restaurant, date, lineContent[0], lineContent[1], lineContent[2], lineContent[3], price.trim());
 		menuItems.push(item);
 	}
 
@@ -286,7 +282,7 @@ function formPreviewRow(dish)
 	// Zelle für Preis
 	var priceCell = document.createElement("td");
 	if(dish.price) {
-		priceCell.innerText = dish.price.replace(".", ",");
+		priceCell.innerText = dish.price.replace(".", ",") + "€";
 	}
 	else priceCell.innerText = "";
 	
