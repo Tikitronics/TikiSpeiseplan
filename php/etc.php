@@ -91,9 +91,12 @@ function writeDay($menu_day) {
 	if(count($menu_day) == 0) return;
 
 	$date_day = convertDate($menu_day[0]->day);
+	
+	if(isToday($menu_day[0]->day)) $day_class = "today";
+	else $day_class = "day";
 
 	// Ausgabe
-	echo "<div class=\"day\">";
+	echo "<div class=\"" . $day_class . "\">";
 	echo '<h2>' . $date_day . "</h2>";
 	echo "<table class=\"dishtable\">\n";
 
@@ -141,6 +144,15 @@ function convertDate($sql_date) {
 	$day_german = date("d.m.Y", $phpdate);
 	$day_of_the_week = date("w", $phpdate);
 	return $tage[$day_of_the_week] . ', ' . $day_german;
+}
+
+/*--------------------------------------------------
+// Prüft, ob das übergebe Datum heute ist.
+// ------------------------------------------------*/
+function isToday($date1) {
+	$today = new DateTime();
+	if($today->format('Y-m-d') == $date1) return true;
+	else return false;
 }
 
 /*--------------------------------------------------

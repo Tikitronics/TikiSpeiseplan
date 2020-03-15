@@ -4,7 +4,7 @@ body {
 	background-image: url('img/bg_red.png');
 }
 
-.day {
+.day, .today {
 	width: 900px;
 	text-align: left;
 	margin-left: auto;
@@ -14,6 +14,10 @@ body {
 	background-color: rgba(255, 255, 255, 0.6);
 	border-style: dashed;
 	border-width: 2px;
+}
+
+.today {
+	background-color: rgba(255, 255, 255, 1);
 }
 
 .dish {
