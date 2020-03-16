@@ -15,6 +15,9 @@ var restaurant;
 var menuSegments;
 var menuItems;
 
+window.onload = testCollision;
+window.onresize = testCollision;
+
 // Wenn das Element inputText nicht gefunden wurde, sind wir in der falschen Datei
 if(inputText)
 {
@@ -378,6 +381,25 @@ function toggleBackgroundColor() {
 		}
 	}
 	console.log(style.getPropertyValue('background-image'));
+}
+
+// ---------------------------------------------------------
+// Kollisionsdetektion zwischen Chef-Bild und Speiseplan
+// ---------------------------------------------------------
+function testCollision () {
+	var chefImage = document.getElementById("imageChef");
+	var chefRect = chefImage.getBoundingClientRect();
+	var divs = document.getElementsByClassName("day");
+	var lastDiv = divs.item(divs.length-1);
+	var lastDivBB = lastDiv.getBoundingClientRect();
+
+	if(!((chefRect.x > lastDivBB.right) | (chefRect.y > lastDivBB.bottom)))
+	{
+		chefImage.style.opacity = 0.15;
+	}
+	else {
+		chefImage.style.opacity = 1;
+	}
 }
 
 

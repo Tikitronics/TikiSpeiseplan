@@ -4,7 +4,12 @@ body {
 	background-image: url('img/bg_red.png');
 }
 
-.day, .today {
+#coord {
+	position: fixed;
+	bottom: 10px;
+}
+
+.day, #today {
 	width: 900px;
 	text-align: left;
 	margin-left: auto;
@@ -16,7 +21,7 @@ body {
 	border-width: 2px;
 }
 
-.today {
+#today {
 	background-color: rgba(255, 255, 255, 1);
 }
 
@@ -124,21 +129,22 @@ input[type=password] {
 	transition: opacity 0.3s;
 }
 
+/*
 #imageChef:hover {
 	opacity: 0.2;
-}
+}*/
 
 @media screen and (max-height: 784px) {
 	#imageChef {
 		max-height: 50%;
 	}
 }
-
+/*
 @media screen and (max-width: 1200px) {
 	#imageChef {
 		opacity:0.15;
 	}
-}
+}*/
 
 .logo {
 	height: 16px;

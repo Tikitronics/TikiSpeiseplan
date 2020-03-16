@@ -91,12 +91,14 @@ function writeDay($menu_day) {
 	if(count($menu_day) == 0) return;
 
 	$date_day = convertDate($menu_day[0]->day);
-	
-	if(isToday($menu_day[0]->day)) $day_class = "today";
-	else $day_class = "day";
+	$day_class = "day";
 
 	// Ausgabe
-	echo "<div class=\"" . $day_class . "\">";
+	if(isToday($menu_day[0]->day)) {
+		echo "<div class=\"" . $day_class . "\" id=\"today\">";
+	}
+	else echo "<div class=\"" . $day_class . "\">";
+	
 	echo '<h2>' . $date_day . "</h2>";
 	echo "<table class=\"dishtable\">\n";
 

@@ -52,10 +52,12 @@
 
 					$grouped_items = groupMenuItemsByDate($received_items);
 
-					if(isset($grouped_items)) {
+					if(isset($grouped_items) && !empty($grouped_items)) {
+						//echo "<div id=\"menu\">\n";
 						foreach($grouped_items as $day) {
 							writeDay($day);
 						}
+						//echo '</div>';
 					}
 					else {
 						echo '<h2>porca miseria, kein Speiseplan gefunden!</h2>';
