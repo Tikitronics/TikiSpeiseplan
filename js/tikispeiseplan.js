@@ -8,6 +8,7 @@ var restaurants = [
 ];
 // Datum muss im ISO Format sein https://www.w3schools.com/js/js_date_formats.asp
 var dateFormat = /\d{4}-\d{2}.\d{2}/;
+var priceFormat = /^\d{1,2}[,.]{1}\d{2}€?$/;
 
 // Variablen, welche die eingegebenen Speiseplandaten enthalten
 var restaurant;
@@ -141,11 +142,12 @@ function parseMenuSegment(menuSegment, restaurant) {
 	for (var line of segmentContent) {
 		var lineContent = line.split(';');
 		let price = lineContent[4];
-		if(price) {
+		if(price && priceFormat.test(price)) {
 			price = price.replace(",", ".");
 			price = price.replace("€", "");
 		}
-		var item = new MenuItem(restaurant, date, lineContent[0], lineContent[1], lineContent[2], lineContent[3], price.trim());
+		else price = "0";
+		var item = new MenuItem(restaurant, date, lineContent[0], lineContent[1], lineContent[2], lineContent[3], price);
 		menuItems.push(item);
 	}
 
