@@ -42,7 +42,3 @@ Das _restaurant_ muss in der Datenbank bereits existieren und richtig geschriebe
   "price" : "4.20€"
 }
 ```
-
-## Einen Eintrag entfernen
-
-_todo_
