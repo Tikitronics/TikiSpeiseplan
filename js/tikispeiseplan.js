@@ -144,13 +144,13 @@ function parseMenuSegment(menuSegment, restaurant) {
 	// Format: Beschreibung; Zusätzliche Beschreibung; Beilage; Typ; Preis
 	for (var line of segmentContent) {
 		var lineContent = line.split(';');
-		let price = lineContent[4];
+		let price = lineContent[3];
 		if(price && priceFormat.test(price)) {
 			price = price.replace(",", ".");
 			price = price.replace("€", "");
 		}
 		else price = "0";
-		var item = new MenuItem(restaurant, date, lineContent[0], lineContent[1], lineContent[2], lineContent[3], price);
+		var item = new MenuItem(restaurant, date, lineContent[0], lineContent[1], lineContent[2], price);
 		menuItems.push(item);
 	}
 
@@ -160,44 +160,18 @@ function parseMenuSegment(menuSegment, restaurant) {
 // ---------------------------------------------------------
 // Konstruktor MenuItem
 // ---------------------------------------------------------
-function MenuItem(restaurant, date, descr, addDescr, side, type, price) {
+function MenuItem(restaurant, date, descr, side, addDescr, price) {
 	this.restaurant = restaurant;
 	this.date = date;
 	this.descr = descr;
 	this.addDescr = addDescr;
 	this.side = side;
-	this.type = type;
 	this.price = price;
 }
 
 // ---------------------------------------------------------
 // Zeigt eine Vorschau der eingegebenen MenuItems. Eine MenuItem
 // stellt einen Tag dar und kann mehrere Gerichte enthalten.
-//
-// Zielformat:
-// -----------
-// <div class="day">
-// 	<h2>Mittwoch, 12.02.2020</h2>
-// 	<table class="dishtable">
-// 		<tr>
-// 			<td>
-// 				<span class="dish">Hähnchenbrust "Melba" (+ side)</span>
-//				<span class="addition">addDesr</span>
-// 			</td>
-// 			<td class="priceCell">
-// 				4,80€
-// 			</td>
-// 		</tr>
-// 		<tr>
-// 			<td>
-// 				<span class="dish">Käsespätzle mit Speckwürfel</span>
-// 			</td>
-// 			<td class="priceCell">
-// 				4,80€
-// 			</td>
-// 		</tr>
-// 	</table>
-// </div>
 // ---------------------------------------------------------
 function renderPreview(menuItems) {
 	var previewSection = document.getElementById("previewDiv");

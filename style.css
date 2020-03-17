@@ -129,11 +129,6 @@ input[type=password] {
 	transition: opacity 0.3s;
 }
 
-/*
-#imageChef:hover {
-	opacity: 0.2;
-}*/
-
 @media screen and (max-height: 784px) {
 	#imageChef {
 		max-height: 50%;
